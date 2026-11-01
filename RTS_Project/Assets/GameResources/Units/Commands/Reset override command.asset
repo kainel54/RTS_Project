@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e1d36500d77f234687a9925a28c2e7c, type: 3}
+  m_Name: Reset override command
+  m_EditorClassIdentifier: 
+  <CommandName>k__BackingField: Reset
+  <CommandIcon>k__BackingField: {fileID: 21300000, guid: f44b3a8d7dc694d90b03aac46aba9e07, type: 3}
+  <IsSingleUnitCommand>k__BackingField: 0
+  <SlotIndex>k__BackingField: 8
+  <RequireClickToActivate>k__BackingField: 0
+  <Commands>k__BackingField: []

@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddfba3cde51e44348835c2b5f2164567, type: 3}
+  m_Name: Worker Data
+  m_EditorClassIdentifier: 
+  <Health>k__BackingField: 100
+  <Prefab>k__BackingField: {fileID: 6303836946881162331, guid: f8cecaee0fe01c143879f5263b955b1a, type: 3}
+  <BuildTime>k__BackingField: 5
+  <Icon>k__BackingField: {fileID: 21300000, guid: d2b771480eece46cca4f48a40e491c5c, type: 3}
+  <Cost>k__BackingField: {fileID: 11400000, guid: 609f1ba91954a8d428a9efe29bc6a8ac, type: 2}
