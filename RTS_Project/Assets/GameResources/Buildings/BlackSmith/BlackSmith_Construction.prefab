@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 6920689410954359993}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.7, y: 0, z: -6}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -52,8 +52,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   decalProjector: {fileID: 7992278214487922118}
   <AbstractUnitData>k__BackingField: {fileID: 11400000, guid: 3393272245bd4554dbc1b2e23d4f8c66, type: 2}
-  <CurrentHealth>k__BackingField: 0
-  <MaxHealth>k__BackingField: 0
   <AvailableCommands>k__BackingField: []
   constructionStages:
   - {fileID: 6312829234583293844}

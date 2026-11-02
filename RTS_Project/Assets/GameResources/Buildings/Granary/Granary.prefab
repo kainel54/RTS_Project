@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5124626849777314489}
   - component: {fileID: 4675887003105143643}
   - component: {fileID: 2377598233059326074}
-  - component: {fileID: 1490417952003448454}
+  - component: {fileID: -8393280699087132791}
   m_Layer: 7
   m_Name: Granary
   m_TagString: Untagged
@@ -73,7 +73,7 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
---- !u!114 &1490417952003448454
+--- !u!114 &-8393280699087132791
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -82,7 +82,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1434125902659538645}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc7f0739a63f486f8566f8470d89b55c, type: 3}
+  m_Script: {fileID: 11500000, guid: acb2556925c22d94195331e8e5d094b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   decalProjector: {fileID: 5607573282069544808}

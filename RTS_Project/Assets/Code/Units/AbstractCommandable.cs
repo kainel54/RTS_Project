@@ -7,7 +7,7 @@ namespace Code.Units
 {
     public abstract class AbstractCommandable : MonoBehaviour, ISelectable
     {
-        [SerializeField] protected GameObject decalProjector;
+        [SerializeField] public GameObject decalProjector;
         
         public bool IsSelected { get; protected set; }
 

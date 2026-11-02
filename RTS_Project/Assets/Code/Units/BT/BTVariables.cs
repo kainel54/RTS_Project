@@ -4,6 +4,6 @@ namespace Code.Units.BT
     {
         TargetLocation, Command, TargetGameObject,
         SupplyAmountHeld, SupplyType, GatherableSupply,
-        Keep, SupplyEventChannel, ConstructionDummy, ConstructBuildingSO
+        Keep, SupplyEventChannel, ConstructionDummy, ConstructBuildingSO, StorageBuildings
     }
 }

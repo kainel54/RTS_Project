@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00b94ebb33711d843b4995b8da6adc9d, type: 3}
   m_Name: Build BlackSmith command
   m_EditorClassIdentifier: 
-  <CommandName>k__BackingField: Farm
+  <CommandName>k__BackingField: BlackSmith
   <CommandIcon>k__BackingField: {fileID: 21300000, guid: cb3b31ebae0d94986a769b3d9c7730f0, type: 3}
   <IsSingleUnitCommand>k__BackingField: 1
   <SlotIndex>k__BackingField: 3
