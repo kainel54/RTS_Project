@@ -12,8 +12,6 @@ namespace Code.Units
         public bool IsSelected { get; protected set; }
 
         [field: SerializeField] public AbstractUnitSO AbstractUnitData { get; private set; }
-        [field: SerializeField] public int CurrentHealth { get; protected set; }
-        [field: SerializeField] public int MaxHealth { get; protected set; }
         [field: SerializeField] public BaseCommandSO[] AvailableCommands { get; private set; }
 
         private BaseCommandSO[] _initialCommands;
@@ -27,7 +25,6 @@ namespace Code.Units
 
         protected virtual void Start()
         {
-            CurrentHealth = MaxHealth = AbstractUnitData.Health;
         }
         
         protected virtual void OnDestroy() { }

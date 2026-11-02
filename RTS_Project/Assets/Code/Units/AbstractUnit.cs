@@ -34,8 +34,6 @@ namespace Code.Units
 
         protected override void Start()
         {
-            base.Start();
-            
             _variableDict = new Dictionary<BTVariables, SerializableGUID>();
             foreach (VariableSO variable in btVariables)
             {
