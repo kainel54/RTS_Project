@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: HouseData
   m_EditorClassIdentifier: 
   <Health>k__BackingField: 100
-  <Prefab>k__BackingField: {fileID: 2530726503081195703, guid: 568d13dc46773c44a9c03ddba0b3fea8, type: 3}
+  <Prefab>k__BackingField: {fileID: 8133870187462799838, guid: a31a398d7d1b18544859fa0934199a12, type: 3}
   <BuildTime>k__BackingField: 10
   <Icon>k__BackingField: {fileID: 21300000, guid: cb3b31ebae0d94986a769b3d9c7730f0, type: 3}
   <Cost>k__BackingField: {fileID: 11400000, guid: 609f1ba91954a8d428a9efe29bc6a8ac, type: 2}
-  <ConstructionDummy>k__BackingField: {fileID: 6920689410954359993, guid: 1b610a536c1cc8d4bb51fe3ba1f02449, type: 3}
+  <ConstructionDummy>k__BackingField: {fileID: 359509225832808043, guid: dcf8a6f454ad8af418647997041987e9, type: 3}

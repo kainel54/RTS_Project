@@ -12,17 +12,29 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: e20b220090f09f8498d836e2aee5a52e, type: 2}
+    - target: {fileID: 383961802631024420, guid: a31a398d7d1b18544859fa0934199a12, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 383961802631024420, guid: a31a398d7d1b18544859fa0934199a12, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 383961802631024420, guid: a31a398d7d1b18544859fa0934199a12, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3468406308162096647, guid: a31a398d7d1b18544859fa0934199a12, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8.796507
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3468406308162096647, guid: a31a398d7d1b18544859fa0934199a12, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.0018377304
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3468406308162096647, guid: a31a398d7d1b18544859fa0934199a12, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4.1775017
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3468406308162096647, guid: a31a398d7d1b18544859fa0934199a12, type: 3}
       propertyPath: m_LocalRotation.w
@@ -58,7 +70,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8133870187462799838, guid: a31a398d7d1b18544859fa0934199a12, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6114942645539908212, guid: a31a398d7d1b18544859fa0934199a12, type: 3}
@@ -70,14 +82,19 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8133870187462799838, guid: a31a398d7d1b18544859fa0934199a12, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 8234112147460307492}
+      addedObject: {fileID: 6143845854712957461}
   m_SourcePrefab: {fileID: 100100000, guid: a31a398d7d1b18544859fa0934199a12, type: 3}
+--- !u!23 &2434841621968301091 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 383961802628730308, guid: a31a398d7d1b18544859fa0934199a12, type: 3}
+  m_PrefabInstance: {fileID: 2638635181493232103}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6088619720689094713 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8133870187462799838, guid: a31a398d7d1b18544859fa0934199a12, type: 3}
   m_PrefabInstance: {fileID: 2638635181493232103}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8234112147460307492
+--- !u!114 &6143845854712957461
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -93,4 +110,4 @@ MonoBehaviour:
   errorFresnelColor: {r: 4, g: 1.7, b: 0, a: 1}
   availableToPlaceTintColor: {r: 0.2, g: 0.65, b: 1, a: 1}
   availableToPlaceFresnelColor: {r: 0.8, g: 1.5, b: 2.2, a: 1}
-  ghostRenderer: {fileID: 4741841042601636837, guid: 105ed3723669d5b498f86b1124bfb683, type: 3}
+  ghostRenderer: {fileID: 2434841621968301091}

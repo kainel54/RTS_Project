@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   decalProjector: {fileID: 5808539217071746417}
-  <AbstractUnitData>k__BackingField: {fileID: 11400000, guid: 3393272245bd4554dbc1b2e23d4f8c66, type: 2}
+  <AbstractUnitData>k__BackingField: {fileID: 11400000, guid: ec73b67162efb564eb3dfbcc520ce68f, type: 2}
   <CurrentHealth>k__BackingField: 0
   <MaxHealth>k__BackingField: 0
   <AvailableCommands>k__BackingField: []
@@ -389,15 +389,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1494088548871663584, guid: a84b5a05bbe04ce419aff617a8229bc9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8.796507
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1494088548871663584, guid: a84b5a05bbe04ce419aff617a8229bc9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.0018377304
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1494088548871663584, guid: a84b5a05bbe04ce419aff617a8229bc9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4.1775017
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1494088548871663584, guid: a84b5a05bbe04ce419aff617a8229bc9, type: 3}
       propertyPath: m_LocalRotation.w
