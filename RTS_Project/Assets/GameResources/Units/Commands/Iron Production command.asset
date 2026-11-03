@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2655cc72a4a532f49b4a3c28d3237830, type: 3}
+  m_Name: Iron Production command
+  m_EditorClassIdentifier: 
+  <CommandName>k__BackingField: IronProduction
+  <CommandIcon>k__BackingField: {fileID: 21300000, guid: 30519252e18e748fbb0670effaf9372f, type: 3}
+  <IsSingleUnitCommand>k__BackingField: 0
+  <SlotIndex>k__BackingField: 0
+  <RequireClickToActivate>k__BackingField: 1
+  <IronOre>k__BackingField: {fileID: 11400000, guid: 609f1ba91954a8d428a9efe29bc6a8ac, type: 2}
+  ingotAmount: 1
+  ingotSupplyType: {fileID: 11400000, guid: c18de99f884b2bb4b96ba169349425d6, type: 2}

@@ -1,3 +1,4 @@
+using Code.Units;
 using UnityEngine;
 
 namespace Code.Environments
@@ -8,5 +9,6 @@ namespace Code.Environments
         [field: SerializeField] public int MaxAmount { get; private set; } = 1500;
         [field: SerializeField] public int AmountPerGather { get; private set; } = 8;
         [field: SerializeField] public float BaseGatherTime { get; private set; } = 1.5f;
-    }
+        [field: SerializeField] public float BuildTime { get; private set; } = 10f;
+        }
 }

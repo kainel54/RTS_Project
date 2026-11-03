@@ -21,10 +21,10 @@ namespace Code.UI.Containers
             for (; i < _currentBaseBuilding.QueueSize; i++)
             {
                 int idx = i;
-                queueButtons[i].EnableFor(_currentBaseBuilding.Queue[i], () => _currentBaseBuilding.CancelGenerate(idx));
+                queueButtons[i].EnableFor(_currentBaseBuilding.UnitQueue[i], () => _currentBaseBuilding.CancelGenerate(idx));
                 if (i == 0)
                 {
-                    firstUnitNameText.SetText(_currentBaseBuilding.Queue[i].name);
+                    firstUnitNameText.SetText(_currentBaseBuilding.UnitQueue[i].name);
                 }
             }
 
@@ -83,7 +83,7 @@ namespace Code.UI.Containers
             {
                 float startTime = _currentBaseBuilding.CurrentQueueStartTime;
                 float progress = Mathf.Clamp01(
-                    (Time.time - startTime) / _currentBaseBuilding.SOBeingBuilt.BuildTime);
+                    (Time.time - startTime) / _currentBaseBuilding.UnitSOBeingBuilt.BuildTime);
 
                 progressBar.SetProgress(progress);
                 yield return null;

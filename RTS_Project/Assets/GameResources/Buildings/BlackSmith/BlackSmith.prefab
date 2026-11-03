@@ -87,7 +87,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   decalProjector: {fileID: 7593651997918062673}
   <AbstractUnitData>k__BackingField: {fileID: 11400000, guid: 3393272245bd4554dbc1b2e23d4f8c66, type: 2}
-  <AvailableCommands>k__BackingField: []
+  <AvailableCommands>k__BackingField:
+  - {fileID: 11400000, guid: 3eaa74a5d6d7b2342a7f111733dd06b7, type: 2}
   <CurrentQueueStartTime>k__BackingField: 0
   <SOBeingBuilt>k__BackingField: {fileID: 0}
 --- !u!1001 &3683676430317690219

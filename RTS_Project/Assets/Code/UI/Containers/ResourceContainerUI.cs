@@ -20,8 +20,8 @@ namespace Code.UI.Containers
             _userSupplies = item;
             _userSupplies.OnSupplyChanged -= UpdateSupplyUI;
             _userSupplies.OnSupplyChanged += UpdateSupplyUI;
-            UpdateSupplyUI(_userSupplies.MineralAmount, mineralSO);
-            UpdateSupplyUI(_userSupplies.GasAmount, gasSO);
+            UpdateSupplyUI(_userSupplies.WoodAmount, mineralSO);
+            UpdateSupplyUI(_userSupplies.StoneAmount, gasSO);
 
             gameObject.SetActive(true);
         }

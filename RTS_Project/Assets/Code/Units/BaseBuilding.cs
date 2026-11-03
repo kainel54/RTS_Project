@@ -1,3 +1,6 @@
+using Code.CoreSystem;
+using Code.Environments;
+using Code.GameEvents;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,12 +11,17 @@ namespace Code.Units
     {
         public const int MAX_QUEUE_SIZE = 5;
         private List<UnitSO> _buildingQueue = new List<UnitSO>(MAX_QUEUE_SIZE);
+        private List<SupplySO> _supplyQueue = new List<SupplySO>(MAX_QUEUE_SIZE);
         public int QueueSize => _buildingQueue.Count;
-        public UnitSO[] Queue => _buildingQueue.ToArray();
+        public UnitSO[] UnitQueue => _buildingQueue.ToArray();
+        public SupplySO[] SupplyQueue => _supplyQueue.ToArray();
         [field: SerializeField] public float CurrentQueueStartTime { get; private set; }
-        [field: SerializeField] public UnitSO SOBeingBuilt { get; private set; }
+        [field: SerializeField] public UnitSO UnitSOBeingBuilt { get; private set; }
+        [field: SerializeField] public SupplySO SupplySOBeingBuilt { get; private set; }
 
         public delegate void QueueUpdatedEvent(UnitSO[] unitsInQueue);
+        public delegate void SupplyQueueUpdatedEvent(SupplySO[] supplysInQueue);
+        public event SupplyQueueUpdatedEvent SupplyQueueUpdated;
         public event QueueUpdatedEvent OnQueueUpdated;
         
         public void BuildUnit(UnitSO unitToBuild)
@@ -25,7 +33,20 @@ namespace Code.Units
             }
             else
             {
-                OnQueueUpdated?.Invoke(Queue);
+                OnQueueUpdated?.Invoke(UnitQueue);
+            }
+        }
+
+        public void BuiltSupply(SupplySO supplyToBuild)
+        {
+            _supplyQueue.Add(supplyToBuild);
+            if (_supplyQueue.Count == 1)
+            {
+                StartCoroutine(DoBuildSupplys());
+            }
+            else
+            {
+                SupplyQueueUpdated?.Invoke(SupplyQueue);
             }
         }
 
@@ -33,18 +54,33 @@ namespace Code.Units
         {
             while (_buildingQueue.Count > 0)
             {
-                SOBeingBuilt = _buildingQueue[0];
+                UnitSOBeingBuilt = _buildingQueue[0];
                 CurrentQueueStartTime = Time.time;
-                OnQueueUpdated?.Invoke(Queue);
+                OnQueueUpdated?.Invoke(UnitQueue);
                 
-                yield return new WaitForSeconds(SOBeingBuilt.BuildTime); //빌드시간만큼 대기하고
+                yield return new WaitForSeconds(UnitSOBeingBuilt.BuildTime); //빌드시간만큼 대기하고
 
-                GameObject newUnit = Instantiate(SOBeingBuilt.Prefab, transform.position, Quaternion.identity);
+                GameObject newUnit = Instantiate(UnitSOBeingBuilt.Prefab, transform.position, Quaternion.identity);
                 _buildingQueue.RemoveAt(0);
-                //newUnit은 나중에 쓰인다.
             }
             
-            OnQueueUpdated?.Invoke(Queue);
+            OnQueueUpdated?.Invoke(UnitQueue);
+        }
+
+        private IEnumerator DoBuildSupplys()
+        {
+            while (_supplyQueue.Count > 0)
+            {
+                SupplySOBeingBuilt = _supplyQueue[0];
+                CurrentQueueStartTime = Time.time;
+                SupplyQueueUpdated?.Invoke(SupplyQueue);
+
+                yield return new WaitForSeconds(SupplySOBeingBuilt.BuildTime);
+
+                Bus<SupplyEvent>.Raise(new SupplyEvent(SupplySOBeingBuilt.AmountPerGather, SupplySOBeingBuilt));
+                _buildingQueue.RemoveAt(0);
+            }
+            OnQueueUpdated?.Invoke(UnitQueue);
         }
 
         public void CancelGenerate(int idx)
@@ -65,12 +101,12 @@ namespace Code.Units
                 }
                 else
                 {
-                    OnQueueUpdated?.Invoke(Queue); //큐가 비었다면 이벤트만 발행
+                    OnQueueUpdated?.Invoke(UnitQueue); //큐가 비었다면 이벤트만 발행
                 }
             }
             else
             {
-                OnQueueUpdated?.Invoke(Queue);  //첫번째 유닛이 아닌경우 코루틴은 그냥 돌려도 된다.
+                OnQueueUpdated?.Invoke(UnitQueue);  //첫번째 유닛이 아닌경우 코루틴은 그냥 돌려도 된다.
             }
         }
     }

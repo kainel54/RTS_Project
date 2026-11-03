@@ -7,9 +7,13 @@ namespace Code.Units
 
     public class SupplyCostSO : ScriptableObject
     {
-        [field: SerializeField] public int Minerals { get; private set; } = 50;
-        [field: SerializeField] public SupplySO MineralSO { get; private set; }
-        [field: SerializeField] public int Gas { get; private set; } = 0;
-        [field: SerializeField] public SupplySO GasSO { get; private set; }
+        [field: SerializeField] public int Wood { get; private set; } = 50;
+        [field: SerializeField] public SupplySO WoodSO { get; private set; }
+        [field: SerializeField] public int Stone { get; private set; } = 0;
+        [field: SerializeField] public SupplySO StoneSO { get; private set; }
+        [field: SerializeField] public int IronOre { get; private set; } = 0;
+        [field: SerializeField] public SupplySO IronOreSO { get; private set; }
+        [field: SerializeField] public int IronIngot { get; private set; } = 0;
+        [field: SerializeField] public SupplySO IronIngotSO { get; private set; }
     }
 }

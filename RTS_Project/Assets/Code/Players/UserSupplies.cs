@@ -12,11 +12,15 @@ namespace Code.Players
     {
         public static UserSupplies Instance { get; private set; }
 
-        [SerializeField] private SupplySO mineralSO;
-        [SerializeField] private SupplySO gasSO;
+        [SerializeField] private SupplySO woodSO;
+        [SerializeField] private SupplySO stoneSO;
+        [SerializeField] private SupplySO ironOreSO;
+        [SerializeField] private SupplySO ironIngotSO;
 
-        [field: SerializeField] public int MineralAmount { get; private set; }
-        [field: SerializeField] public int GasAmount { get; private set; }
+        [field: SerializeField] public int WoodAmount { get; private set; }
+        [field: SerializeField] public int StoneAmount { get; private set; }
+        [field: SerializeField] public int IronOreAmount { get; private set; }
+        [field: SerializeField] public int IronIngotAmount { get; private set; }
 
         public delegate void SupplyChanged(int amount, SupplySO supplyType);
         public event SupplyChanged OnSupplyChanged; 
@@ -30,7 +34,7 @@ namespace Code.Players
             }
             Instance = this;
 
-            MineralAmount = GasAmount = 0;
+            WoodAmount = StoneAmount = IronOreAmount = IronIngotAmount = 0;
 
             Bus<SupplyEvent>.OnEvent += HandleSupplyEvent;
         }
@@ -47,22 +51,34 @@ namespace Code.Players
 
         private void HandleSupplyEvent(SupplyEvent evt)
         {
-            if (evt.SupplyType.Equals(mineralSO))
+            if (evt.SupplyType.Equals(woodSO))
             {
-                MineralAmount += evt.Amount;
-                OnSupplyChanged?.Invoke(MineralAmount,mineralSO);
+                WoodAmount += evt.Amount;
+                OnSupplyChanged?.Invoke(WoodAmount, woodSO);
             }
 
-            if (evt.SupplyType.Equals(gasSO))
+            if (evt.SupplyType.Equals(stoneSO))
             {
-                GasAmount += evt.Amount;
-                OnSupplyChanged?.Invoke(GasAmount, gasSO);
+                StoneAmount += evt.Amount;
+                OnSupplyChanged?.Invoke(StoneAmount, stoneSO);
+            }
+
+            if (evt.SupplyType.Equals(ironOreSO))
+            {
+                StoneAmount += evt.Amount;
+                OnSupplyChanged?.Invoke(IronOreAmount, ironOreSO);
+            }
+
+            if (evt.SupplyType.Equals(ironIngotSO))
+            {
+                StoneAmount += evt.Amount;
+                OnSupplyChanged?.Invoke(IronIngotAmount, ironIngotSO);
             }
         }
 
         public bool HasEnoughSupplies(SupplyCostSO cost)
         {
-            return MineralAmount >= cost.Minerals && GasAmount >= cost.Gas;
+            return WoodAmount >= cost.Wood && StoneAmount >= cost.Stone ;
         }
 
     }
