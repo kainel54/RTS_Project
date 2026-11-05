@@ -25,6 +25,18 @@ namespace Code.Units
         public delegate void SupplyQueueUpdatedEvent(SupplySO[] suppliesInQueue);
         public event QueueUpdatedEvent OnQueueUpdated;
         public event SupplyQueueUpdatedEvent OnSupplyQueueUpdated;
+
+        protected override void Start()
+        {
+            base.Start();
+            PopulationSystem.Instance?.RegisterBuilding(this);
+        }
+
+        protected override void OnDestroy()
+        {
+            PopulationSystem.Instance?.UnregisterBuilding(this);
+            base.OnDestroy();
+        }
         
         public void BuildUnit(UnitSO unitToBuild)
         {

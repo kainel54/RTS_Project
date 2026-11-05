@@ -6,5 +6,6 @@ namespace Code.Units
     public class BuildingSO : AbstractUnitSO
     {
         [field: SerializeField] public GameObject ConstructionDummy { get; private set; }
+        [field: SerializeField, Min(0)] public int PopulationBonus { get; private set; }
     }
 }

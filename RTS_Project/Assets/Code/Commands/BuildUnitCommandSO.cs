@@ -11,15 +11,24 @@ namespace Code.Commands
 
         public override bool CanHandle(CommandContext context)
         {
-            return context.Commandable is BaseBuilding { QueueSize: < BaseBuilding.MAX_QUEUE_SIZE }
+            return Unit != null
+                && context.Commandable is BaseBuilding { QueueSize: < BaseBuilding.MAX_QUEUE_SIZE }
                 && UserSupplies.Instance != null
-                && UserSupplies.Instance.HasEnoughSupplies(Unit.Cost);
+                && UserSupplies.Instance.HasEnoughSupplies(Unit.Cost)
+                && PopulationSystem.Instance != null
+                && PopulationSystem.Instance.CanQueue(Unit);
         }
 
         public override void Handle(CommandContext context)
         {
-            if (UserSupplies.Instance.HasEnoughSupplies(Unit.Cost) == false) return;
-            BaseBuilding building = context.Commandable as BaseBuilding;
+            if (Unit == null
+                || context.Commandable is not BaseBuilding building
+                || building.QueueSize >= BaseBuilding.MAX_QUEUE_SIZE
+                || UserSupplies.Instance == null
+                || PopulationSystem.Instance == null
+                || !PopulationSystem.Instance.CanQueue(Unit)
+                || !UserSupplies.Instance.TrySpendSupplies(Unit.Cost)) return;
+
             building.BuildUnit(Unit);
         }
     }
