@@ -12,7 +12,9 @@ namespace Code.Units
         public const int MAX_QUEUE_SIZE = 5;
         private List<UnitSO> _buildingQueue = new List<UnitSO>(MAX_QUEUE_SIZE);
         private List<SupplySO> _supplyQueue = new List<SupplySO>(MAX_QUEUE_SIZE);
+        private Coroutine _supplyCoroutine;
         public int QueueSize => _buildingQueue.Count;
+        public int SupplyQueueSize => _supplyQueue.Count;
         public UnitSO[] UnitQueue => _buildingQueue.ToArray();
         public SupplySO[] SupplyQueue => _supplyQueue.ToArray();
         [field: SerializeField] public float CurrentQueueStartTime { get; private set; }
@@ -20,9 +22,9 @@ namespace Code.Units
         [field: SerializeField] public SupplySO SupplySOBeingBuilt { get; private set; }
 
         public delegate void QueueUpdatedEvent(UnitSO[] unitsInQueue);
-        public delegate void SupplyQueueUpdatedEvent(SupplySO[] supplysInQueue);
-        public event SupplyQueueUpdatedEvent SupplyQueueUpdated;
+        public delegate void SupplyQueueUpdatedEvent(SupplySO[] suppliesInQueue);
         public event QueueUpdatedEvent OnQueueUpdated;
+        public event SupplyQueueUpdatedEvent OnSupplyQueueUpdated;
         
         public void BuildUnit(UnitSO unitToBuild)
         {
@@ -39,16 +41,52 @@ namespace Code.Units
 
         public void BuiltSupply(SupplySO supplyToBuild)
         {
+            if (supplyToBuild == null || _supplyQueue.Count >= MAX_QUEUE_SIZE) return;
+
             _supplyQueue.Add(supplyToBuild);
             if (_supplyQueue.Count == 1)
-            {
-                StartCoroutine(DoBuildSupplys());
-            }
+                _supplyCoroutine = StartCoroutine(DoBuildSupplies());
             else
-            {
-                SupplyQueueUpdated?.Invoke(SupplyQueue);
-            }
+                OnSupplyQueueUpdated?.Invoke(SupplyQueue);
         }
+
+        private IEnumerator DoBuildSupplies()
+        {
+            while (_supplyQueue.Count > 0)
+            {
+                SupplySOBeingBuilt = _supplyQueue[0];
+                CurrentQueueStartTime = Time.time;
+                OnSupplyQueueUpdated?.Invoke(SupplyQueue);
+
+                yield return new WaitForSeconds(SupplySOBeingBuilt.BuildTime);
+
+                Bus<SupplyEvent>.Raise(new SupplyEvent(SupplySOBeingBuilt.AmountPerGather, SupplySOBeingBuilt));
+                _supplyQueue.RemoveAt(0);
+            }
+
+            SupplySOBeingBuilt = null;
+            OnSupplyQueueUpdated?.Invoke(SupplyQueue);
+            _supplyCoroutine = null;
+        }
+
+        public void CancelSupply(int idx)
+        {
+            if (idx < 0 || idx >= _supplyQueue.Count) return;
+
+            _supplyQueue.RemoveAt(idx);
+            if (idx == 0)
+            {
+                if (_supplyCoroutine != null)
+                    StopCoroutine(_supplyCoroutine);
+
+                SupplySOBeingBuilt = null;
+                _supplyCoroutine = _supplyQueue.Count > 0 ? StartCoroutine(DoBuildSupplies()) : null;
+            }
+
+            OnSupplyQueueUpdated?.Invoke(SupplyQueue);
+        }
+
+        
 
         private IEnumerator DoBuildUnits()
         {
@@ -67,21 +105,7 @@ namespace Code.Units
             OnQueueUpdated?.Invoke(UnitQueue);
         }
 
-        private IEnumerator DoBuildSupplys()
-        {
-            while (_supplyQueue.Count > 0)
-            {
-                SupplySOBeingBuilt = _supplyQueue[0];
-                CurrentQueueStartTime = Time.time;
-                SupplyQueueUpdated?.Invoke(SupplyQueue);
-
-                yield return new WaitForSeconds(SupplySOBeingBuilt.BuildTime);
-
-                Bus<SupplyEvent>.Raise(new SupplyEvent(SupplySOBeingBuilt.AmountPerGather, SupplySOBeingBuilt));
-                _buildingQueue.RemoveAt(0);
-            }
-            OnQueueUpdated?.Invoke(UnitQueue);
-        }
+        
 
         public void CancelGenerate(int idx)
         {

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Code.Commands;
 using Code.CoreSystem;
 using Code.GameEvents;
 using Code.UI.Containers;
@@ -13,6 +14,7 @@ namespace Code.UI
     {
         [SerializeField] private CommandContainerUI commandContainerUI;
         [SerializeField] private BuildUnitContainerUI buildUnitContainerUI;
+        [SerializeField] private BuildSupplyContainerUI buildSupplyContainerUI;
         [SerializeField] private ResourceContainerUI resourceContainerUI;
 
         private HashSet<AbstractCommandable> _selectedUnits = new HashSet<AbstractCommandable>(24);
@@ -75,8 +77,13 @@ namespace Code.UI
                     AbstractCommandable firstUnit = _selectedUnits.First();
                     if (firstUnit is BaseBuilding baseBuilding)
                     {
-                        //여기서 나중에 갈림길이 나오겠지만 지금은 그냥 생산으로
-                        buildUnitContainerUI.EnableFor(baseBuilding);
+                        bool hasSupplyProduction = baseBuilding.AvailableCommands != null
+                                                   && baseBuilding.AvailableCommands.Any(command => command is BuildSupplyCommandSO);
+
+                        if (hasSupplyProduction)
+                            buildSupplyContainerUI.EnableFor(baseBuilding);
+                        else
+                            buildUnitContainerUI.EnableFor(baseBuilding);
                     }
                 }
 
@@ -87,6 +94,7 @@ namespace Code.UI
         {
             commandContainerUI.Disable();
             buildUnitContainerUI.Disable();
+            buildSupplyContainerUI.Disable();
         }
     }
 }

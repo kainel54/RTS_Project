@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7bcdbd0a2b4461499ba9f5d8ea18f73, type: 3}
   m_Name: 50 Minerals
   m_EditorClassIdentifier: 
-  <Minerals>k__BackingField: 50
-  <MineralSO>k__BackingField: {fileID: 11400000, guid: 5c62011888c83ce4c924b94c26bdd21c, type: 2}
-  <Gas>k__BackingField: 0
-  <GasSO>k__BackingField: {fileID: 11400000, guid: c18de99f884b2bb4b96ba169349425d6, type: 2}
+  <Wood>k__BackingField: 10
+  <WoodSO>k__BackingField: {fileID: 11400000, guid: 5c62011888c83ce4c924b94c26bdd21c, type: 2}
+  <Stone>k__BackingField: 0
+  <StoneSO>k__BackingField: {fileID: 0}
+  <IronOre>k__BackingField: 0
+  <IronOreSO>k__BackingField: {fileID: 0}
+  <IronIngot>k__BackingField: 0
+  <IronIngotSO>k__BackingField: {fileID: 0}

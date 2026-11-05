@@ -1431,6 +1431,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   commandContainerUI: {fileID: 1506903605}
   buildUnitContainerUI: {fileID: 1290620197}
+  buildSupplyContainerUI: {fileID: 0}
   resourceContainerUI: {fileID: 1379998728}
 --- !u!1001 &592314839
 PrefabInstance:
@@ -3446,6 +3447,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1290620196}
   - component: {fileID: 1290620197}
+  - component: {fileID: 1915400123}
   m_Layer: 5
   m_Name: Build unit Container
   m_TagString: Untagged
@@ -4109,8 +4111,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 537ba3924473d504299c747cfc6ffd32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  woodSO: {fileID: 0}
-  stoneSO: {fileID: 0}
+  woodSO: {fileID: 11400000, guid: 5c62011888c83ce4c924b94c26bdd21c, type: 2}
+  stoneSO: {fileID: 11400000, guid: c18de99f884b2bb4b96ba169349425d6, type: 2}
   ironOreSO: {fileID: 0}
   ironIngotSO: {fileID: 0}
   <WoodAmount>k__BackingField: 0
@@ -4523,6 +4525,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1915400123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1290620195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74b309f4c74c45f3a9af2aeb507a4395, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  progressBar: {fileID: 1238816635}
+  queueButtons:
+  - {fileID: 4761308731217845383}
+  - {fileID: 2108112240}
+  - {fileID: 1221061229}
+  - {fileID: 2086762063}
+  - {fileID: 1948786886}
+  firstSupplyNameText: {fileID: 1133171558}
 --- !u!1001 &1917592423
 PrefabInstance:
   m_ObjectHideFlags: 0

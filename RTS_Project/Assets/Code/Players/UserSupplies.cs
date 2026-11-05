@@ -65,20 +65,41 @@ namespace Code.Players
 
             if (evt.SupplyType.Equals(ironOreSO))
             {
-                StoneAmount += evt.Amount;
+                IronOreAmount += evt.Amount;
                 OnSupplyChanged?.Invoke(IronOreAmount, ironOreSO);
             }
 
             if (evt.SupplyType.Equals(ironIngotSO))
             {
-                StoneAmount += evt.Amount;
+                IronIngotAmount += evt.Amount;
                 OnSupplyChanged?.Invoke(IronIngotAmount, ironIngotSO);
             }
         }
 
         public bool HasEnoughSupplies(SupplyCostSO cost)
         {
-            return WoodAmount >= cost.Wood && StoneAmount >= cost.Stone ;
+            return cost != null
+                   && WoodAmount >= cost.Wood
+                   && StoneAmount >= cost.Stone
+                   && IronOreAmount >= cost.IronOre
+                   && IronIngotAmount >= cost.IronIngot;
+        }
+
+        public bool TrySpendSupplies(SupplyCostSO cost)
+        {
+            if (!HasEnoughSupplies(cost)) return false;
+
+            WoodAmount -= cost.Wood;
+            StoneAmount -= cost.Stone;
+            IronOreAmount -= cost.IronOre;
+            IronIngotAmount -= cost.IronIngot;
+
+            if (cost.Wood > 0) OnSupplyChanged?.Invoke(WoodAmount, woodSO);
+            if (cost.Stone > 0) OnSupplyChanged?.Invoke(StoneAmount, stoneSO);
+            if (cost.IronOre > 0) OnSupplyChanged?.Invoke(IronOreAmount, ironOreSO);
+            if (cost.IronIngot > 0) OnSupplyChanged?.Invoke(IronIngotAmount, ironIngotSO);
+
+            return true;
         }
 
     }

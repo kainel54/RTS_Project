@@ -88,9 +88,10 @@ MonoBehaviour:
   decalProjector: {fileID: 7593651997918062673}
   <AbstractUnitData>k__BackingField: {fileID: 11400000, guid: 3393272245bd4554dbc1b2e23d4f8c66, type: 2}
   <AvailableCommands>k__BackingField:
-  - {fileID: 11400000, guid: 3eaa74a5d6d7b2342a7f111733dd06b7, type: 2}
+  - {fileID: 11400000, guid: 78fb853d2c5ca414790a2d5d2a29a36a, type: 2}
   <CurrentQueueStartTime>k__BackingField: 0
-  <SOBeingBuilt>k__BackingField: {fileID: 0}
+  <UnitSOBeingBuilt>k__BackingField: {fileID: 0}
+  <SupplySOBeingBuilt>k__BackingField: {fileID: 0}
 --- !u!1001 &3683676430317690219
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -101,11 +102,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3774487472116036040, guid: f8a3b589d8ef40b4480f5b860d21b4b8, type: 3}
       propertyPath: m_Size.x
-      value: 6.5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3774487472116036040, guid: f8a3b589d8ef40b4480f5b860d21b4b8, type: 3}
       propertyPath: m_Size.y
-      value: 6.5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5330724964072795246, guid: f8a3b589d8ef40b4480f5b860d21b4b8, type: 3}
       propertyPath: m_LocalPosition.x

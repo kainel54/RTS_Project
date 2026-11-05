@@ -15,7 +15,7 @@ namespace Code.Commands
 
         public override bool CanHandle(CommandContext context)
         {
-            return context.Commandable is BaseBuilding { QueueSize: < BaseBuilding.MAX_QUEUE_SIZE }
+            return context.Commandable is BaseBuilding { SupplyQueueSize: < BaseBuilding.MAX_QUEUE_SIZE }
                 && UserSupplies.Instance != null
                 && UserSupplies.Instance.HasEnoughSupplies(IronOre);
         }
