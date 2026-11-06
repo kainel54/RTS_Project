@@ -87,11 +87,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   decalProjector: {fileID: 7891179693664253210}
   <AbstractUnitData>k__BackingField: {fileID: 11400000, guid: ec73b67162efb564eb3dfbcc520ce68f, type: 2}
-  <CurrentHealth>k__BackingField: 0
-  <MaxHealth>k__BackingField: 0
   <AvailableCommands>k__BackingField: []
   <CurrentQueueStartTime>k__BackingField: 0
-  <SOBeingBuilt>k__BackingField: {fileID: 0}
+  <UnitSOBeingBuilt>k__BackingField: {fileID: 0}
+  <SupplySOBeingBuilt>k__BackingField: {fileID: 0}
 --- !u!1001 &383961802630895012
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -118,27 +117,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 05035b78d90b21f43854dfe010ccd289, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 05035b78d90b21f43854dfe010ccd289, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.7071068
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 05035b78d90b21f43854dfe010ccd289, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 05035b78d90b21f43854dfe010ccd289, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 05035b78d90b21f43854dfe010ccd289, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 05035b78d90b21f43854dfe010ccd289, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 05035b78d90b21f43854dfe010ccd289, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
