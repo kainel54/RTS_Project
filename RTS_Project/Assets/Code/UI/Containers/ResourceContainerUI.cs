@@ -15,6 +15,10 @@ namespace Code.UI.Containers
         [SerializeField] private TextMeshProUGUI gasText;
         [SerializeField] private SupplySO foodSO;
         [SerializeField] private TextMeshProUGUI foodText;
+        [SerializeField] private SupplySO ironOreSO;
+        [SerializeField] private TextMeshProUGUI ironOreText;
+        [SerializeField] private SupplySO ironIngotSO;
+        [SerializeField] private TextMeshProUGUI ironIngotText;
 
         private UserSupplies _userSupplies;
 
@@ -32,6 +36,8 @@ namespace Code.UI.Containers
             UpdateSupplyUI(_userSupplies.WoodAmount, mineralSO);
             UpdateSupplyUI(_userSupplies.StoneAmount, gasSO);
             UpdateSupplyUI(_userSupplies.FoodAmount, foodSO);
+            UpdateSupplyUI(_userSupplies.IronOreAmount, ironOreSO);
+            UpdateSupplyUI(_userSupplies.IronIngotAmount, ironIngotSO);
 
             gameObject.SetActive(true);
         }
@@ -80,6 +86,12 @@ namespace Code.UI.Containers
 
             if (foodSO != null && supplyType == foodSO && foodText != null)
                 foodText.SetText(amount.ToString());
+
+            if (ironOreSO != null && supplyType == ironOreSO && ironOreText != null)
+                ironOreText.SetText(amount.ToString());
+
+            if (ironIngotSO != null && supplyType == ironIngotSO && ironIngotText != null)
+                ironIngotText.SetText(amount.ToString());
         }
 
     }

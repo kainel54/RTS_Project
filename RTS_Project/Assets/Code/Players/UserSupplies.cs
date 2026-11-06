@@ -2,7 +2,6 @@ using Code.CoreSystem;
 using Code.Environments;
 using Code.GameEvents;
 using Code.Units;
-using NUnit.Framework;
 using System;
 using UnityEngine;
 
@@ -10,6 +9,8 @@ namespace Code.Players
 {
     public class UserSupplies : MonoBehaviour
     {
+        private const int DebugSupplyAmount = 100;
+
         public static UserSupplies Instance { get; private set; }
 
         [SerializeField] private SupplySO woodSO;
@@ -44,6 +45,23 @@ namespace Code.Players
         private void Start()
         {
             Bus<UserSupplyReadyEvent>.Raise(new UserSupplyReadyEvent(this));
+        }
+
+        private void Update()
+        {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            if (Input.GetKeyDown(KeyCode.F1)) AddDebugSupply(woodSO);
+            if (Input.GetKeyDown(KeyCode.F2)) AddDebugSupply(stoneSO);
+            if (Input.GetKeyDown(KeyCode.F3)) AddDebugSupply(ironOreSO);
+            if (Input.GetKeyDown(KeyCode.F4)) AddDebugSupply(ironIngotSO);
+            if (Input.GetKeyDown(KeyCode.F5)) AddDebugSupply(foodSO);
+#endif
+        }
+
+        private void AddDebugSupply(SupplySO supply)
+        {
+            if (supply != null)
+                HandleSupplyEvent(new SupplyEvent(DebugSupplyAmount, supply));
         }
 
         private void OnDestroy()

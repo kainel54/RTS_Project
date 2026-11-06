@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Worker build command
   m_EditorClassIdentifier: 
   <CommandName>k__BackingField: Worker
-  <CommandIcon>k__BackingField: {fileID: 21300000, guid: 34af3d0ef65e24fb89c8cbfcfc1370a1, type: 3}
+  <CommandIcon>k__BackingField: {fileID: 21300000, guid: a66577b5b826a4a4fb46ae7e6108b830, type: 3}
   <IsSingleUnitCommand>k__BackingField: 1
   <SlotIndex>k__BackingField: 0
   <RequireClickToActivate>k__BackingField: 0

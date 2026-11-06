@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15cab0a07056f274091502632fab9a1b, type: 3}
   m_Name: Supply Build command
   m_EditorClassIdentifier: 
-  <CommandName>k__BackingField: Supply
+  <CommandName>k__BackingField: Iron Ingot
   <CommandIcon>k__BackingField: {fileID: 21300000, guid: 30519252e18e748fbb0670effaf9372f, type: 3}
   <IsSingleUnitCommand>k__BackingField: 1
   <SlotIndex>k__BackingField: 0
   <RequireClickToActivate>k__BackingField: 0
   <Cost>k__BackingField: {fileID: 11400000, guid: 44988b389f9740a469c35056bbbcb81c, type: 2}
-  <Supply>k__BackingField: {fileID: 11400000, guid: c18de99f884b2bb4b96ba169349425d6, type: 2}
+  <Supply>k__BackingField: {fileID: 11400000, guid: a1b2c3d4e5f6478899aabbccddeeff02, type: 2}

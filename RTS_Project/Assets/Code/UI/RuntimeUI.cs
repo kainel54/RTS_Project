@@ -17,11 +17,12 @@ namespace Code.UI
         [SerializeField] private BuildUnitContainerUI buildUnitContainerUI;
         [SerializeField] private BuildSupplyContainerUI buildSupplyContainerUI;
         [SerializeField] private ResourceContainerUI resourceContainerUI;
+        [SerializeField] private TextMeshProUGUI populationText;
+        [SerializeField] private TextMeshProUGUI workerCountText;
 
         private HashSet<AbstractCommandable> _selectedUnits = new HashSet<AbstractCommandable>(24);
         private PopulationSystem _populationSystem;
         private TextMeshProUGUI _populationText;
-        private TextMeshProUGUI _workerCountText;
         private BaseBuilding _displayedBuilding;
 
         private void Awake()
@@ -38,11 +39,10 @@ namespace Code.UI
             DisableAllUI();
 
             _populationSystem = PopulationSystem.Instance;
+            workerCountText?.transform.parent.gameObject.SetActive(false);
             if (_populationSystem != null)
             {
-                _populationText = resourceContainerUI.CreateCounter("PopulationBar", _populationSystem.PopulationIcon);
-                _workerCountText = resourceContainerUI.CreateCounter("AssignedWorkersBar", _populationSystem.PopulationIcon);
-                _workerCountText.transform.parent.gameObject.SetActive(false);
+                _populationText = populationText;
                 _populationSystem.PopulationChanged += UpdatePopulationUI;
                 UpdatePopulationUI(_populationSystem.CurrentPopulation, _populationSystem.MaximumPopulation);
             }
@@ -122,11 +122,11 @@ namespace Code.UI
                 _displayedBuilding.AssignedWorkersUpdated -= UpdateWorkerCountUI;
 
             _displayedBuilding = _selectedUnits.Count == 1 ? _selectedUnits.First() as BaseBuilding : null;
-            if (_workerCountText == null) return;
+            if (workerCountText == null) return;
 
             if (_displayedBuilding == null)
             {
-                _workerCountText.transform.parent.gameObject.SetActive(false);
+                workerCountText.transform.parent.gameObject.SetActive(false);
                 return;
             }
 
@@ -136,10 +136,10 @@ namespace Code.UI
 
         private void UpdateWorkerCountUI(Worker[] workers)
         {
-            if (_displayedBuilding == null || _workerCountText == null) return;
+            if (_displayedBuilding == null || workerCountText == null) return;
 
-            _workerCountText.transform.parent.gameObject.SetActive(true);
-            _workerCountText.SetText($"{workers.Length}/{_displayedBuilding.WorkerCapacity}");
+            workerCountText.transform.parent.gameObject.SetActive(true);
+            workerCountText.SetText($"{workers.Length}/{_displayedBuilding.WorkerCapacity}");
         }
 
         private void DisableAllUI()
