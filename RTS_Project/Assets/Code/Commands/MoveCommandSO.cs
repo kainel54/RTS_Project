@@ -20,6 +20,8 @@ namespace Code.Commands
         public override void Handle(CommandContext context)
         {
             AbstractUnit unit = context.Commandable as AbstractUnit;
+            if (unit is Worker worker)
+                worker.UnassignFromBuilding();
 
             if (context.UnitIndex == 0)
             {

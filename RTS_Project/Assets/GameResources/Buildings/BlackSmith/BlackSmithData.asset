@@ -18,3 +18,4 @@ MonoBehaviour:
   <Icon>k__BackingField: {fileID: 21300000, guid: cb3b31ebae0d94986a769b3d9c7730f0, type: 3}
   <Cost>k__BackingField: {fileID: 11400000, guid: 609f1ba91954a8d428a9efe29bc6a8ac, type: 2}
   <ConstructionDummy>k__BackingField: {fileID: 6920689410954359993, guid: 1b610a536c1cc8d4bb51fe3ba1f02449, type: 3}
+  <WorkerCapacity>k__BackingField: 2

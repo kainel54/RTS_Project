@@ -6,6 +6,7 @@ using Code.CoreSystem;
 using Code.GameEvents;
 using Code.UI.Containers;
 using Code.Units;
+using TMPro;
 using UnityEngine;
 
 namespace Code.UI
@@ -18,6 +19,10 @@ namespace Code.UI
         [SerializeField] private ResourceContainerUI resourceContainerUI;
 
         private HashSet<AbstractCommandable> _selectedUnits = new HashSet<AbstractCommandable>(24);
+        private PopulationSystem _populationSystem;
+        private TextMeshProUGUI _populationText;
+        private TextMeshProUGUI _workerCountText;
+        private BaseBuilding _displayedBuilding;
 
         private void Awake()
         {
@@ -31,6 +36,16 @@ namespace Code.UI
         private void Start()
         {
             DisableAllUI();
+
+            _populationSystem = PopulationSystem.Instance;
+            if (_populationSystem != null)
+            {
+                _populationText = resourceContainerUI.CreateCounter("PopulationBar", _populationSystem.PopulationIcon);
+                _workerCountText = resourceContainerUI.CreateCounter("AssignedWorkersBar", _populationSystem.PopulationIcon);
+                _workerCountText.transform.parent.gameObject.SetActive(false);
+                _populationSystem.PopulationChanged += UpdatePopulationUI;
+                UpdatePopulationUI(_populationSystem.CurrentPopulation, _populationSystem.MaximumPopulation);
+            }
         }
 
         private void OnDestroy()
@@ -39,6 +54,16 @@ namespace Code.UI
             Bus<UnitDeSelectEvent>.OnEvent -= HandleUnitDeSelect;
             Bus<UserSupplyReadyEvent>.OnEvent -= HandleUserSupplyReady;
             Bus<UnitDeSpawnEvent>.OnEvent -= HandleUnitDeSpawn;
+            if (_populationSystem != null)
+                _populationSystem.PopulationChanged -= UpdatePopulationUI;
+            if (_displayedBuilding != null)
+                _displayedBuilding.AssignedWorkersUpdated -= UpdateWorkerCountUI;
+        }
+
+        private void UpdatePopulationUI(int currentPopulation, int maximumPopulation)
+        {
+            if (_populationText != null)
+                _populationText.SetText($"{currentPopulation}/{maximumPopulation}");
         }
         private void HandleUnitDeSpawn(UnitDeSpawnEvent evt)
         {
@@ -68,6 +93,7 @@ namespace Code.UI
         private void RefreshUI()
         {
             DisableAllUI();
+            UpdateDisplayedBuilding();
             if (_selectedUnits.Count > 0)
             {
                 commandContainerUI.EnableFor(_selectedUnits);
@@ -88,6 +114,32 @@ namespace Code.UI
                 }
 
             }
+        }
+
+        private void UpdateDisplayedBuilding()
+        {
+            if (_displayedBuilding != null)
+                _displayedBuilding.AssignedWorkersUpdated -= UpdateWorkerCountUI;
+
+            _displayedBuilding = _selectedUnits.Count == 1 ? _selectedUnits.First() as BaseBuilding : null;
+            if (_workerCountText == null) return;
+
+            if (_displayedBuilding == null)
+            {
+                _workerCountText.transform.parent.gameObject.SetActive(false);
+                return;
+            }
+
+            _displayedBuilding.AssignedWorkersUpdated += UpdateWorkerCountUI;
+            UpdateWorkerCountUI(_displayedBuilding.AssignedWorkers);
+        }
+
+        private void UpdateWorkerCountUI(Worker[] workers)
+        {
+            if (_displayedBuilding == null || _workerCountText == null) return;
+
+            _workerCountText.transform.parent.gameObject.SetActive(true);
+            _workerCountText.SetText($"{workers.Length}/{_displayedBuilding.WorkerCapacity}");
         }
 
         private void DisableAllUI()

@@ -16,11 +16,13 @@ namespace Code.Players
         [SerializeField] private SupplySO stoneSO;
         [SerializeField] private SupplySO ironOreSO;
         [SerializeField] private SupplySO ironIngotSO;
+        [SerializeField] private SupplySO foodSO;
 
         [field: SerializeField] public int WoodAmount { get; private set; }
         [field: SerializeField] public int StoneAmount { get; private set; }
         [field: SerializeField] public int IronOreAmount { get; private set; }
         [field: SerializeField] public int IronIngotAmount { get; private set; }
+        [field: SerializeField] public int FoodAmount { get; private set; }
 
         public delegate void SupplyChanged(int amount, SupplySO supplyType);
         public event SupplyChanged OnSupplyChanged; 
@@ -34,7 +36,7 @@ namespace Code.Players
             }
             Instance = this;
 
-            WoodAmount = StoneAmount = IronOreAmount = IronIngotAmount = 0;
+            WoodAmount = StoneAmount = IronOreAmount = IronIngotAmount = FoodAmount = 0;
 
             Bus<SupplyEvent>.OnEvent += HandleSupplyEvent;
         }
@@ -74,6 +76,12 @@ namespace Code.Players
                 IronIngotAmount += evt.Amount;
                 OnSupplyChanged?.Invoke(IronIngotAmount, ironIngotSO);
             }
+
+            if (evt.SupplyType.Equals(foodSO))
+            {
+                FoodAmount += evt.Amount;
+                OnSupplyChanged?.Invoke(FoodAmount, foodSO);
+            }
         }
 
         public bool HasEnoughSupplies(SupplyCostSO cost)
@@ -82,7 +90,8 @@ namespace Code.Players
                    && WoodAmount >= cost.Wood
                    && StoneAmount >= cost.Stone
                    && IronOreAmount >= cost.IronOre
-                   && IronIngotAmount >= cost.IronIngot;
+                   && IronIngotAmount >= cost.IronIngot
+                   && FoodAmount >= cost.Food;
         }
 
         public bool TrySpendSupplies(SupplyCostSO cost)
@@ -93,13 +102,25 @@ namespace Code.Players
             StoneAmount -= cost.Stone;
             IronOreAmount -= cost.IronOre;
             IronIngotAmount -= cost.IronIngot;
+            FoodAmount -= cost.Food;
 
             if (cost.Wood > 0) OnSupplyChanged?.Invoke(WoodAmount, woodSO);
             if (cost.Stone > 0) OnSupplyChanged?.Invoke(StoneAmount, stoneSO);
             if (cost.IronOre > 0) OnSupplyChanged?.Invoke(IronOreAmount, ironOreSO);
             if (cost.IronIngot > 0) OnSupplyChanged?.Invoke(IronIngotAmount, ironIngotSO);
+            if (cost.Food > 0) OnSupplyChanged?.Invoke(FoodAmount, foodSO);
 
             return true;
+        }
+
+        public int ConsumeFood(int requestedAmount)
+        {
+            if (requestedAmount <= 0 || FoodAmount <= 0) return 0;
+
+            int consumedAmount = Mathf.Min(requestedAmount, FoodAmount);
+            FoodAmount -= consumedAmount;
+            OnSupplyChanged?.Invoke(FoodAmount, foodSO);
+            return consumedAmount;
         }
 
     }

@@ -14,8 +14,31 @@ namespace Code.Units
         [SerializeField] private GameObject backPackObject;
         [SerializeField] private BaseCommandSO[] cancelConstructionCommandSet;
         public bool HasSupplies => backPackObject.activeSelf;
+        public BaseBuilding AssignedBuilding { get; private set; }
         public bool IsBuilding=>TryGetBTVariable(BTVariables.Command,out BlackboardVariable<UnitCommands> commandValue)&&
             commandValue.Value==UnitCommands.ConstructBuilding;
+
+        public bool AssignToBuilding(BaseBuilding building)
+        {
+            if (building == null || !building.TryAssignWorker(this)) return false;
+
+            MoveTo(building.transform.position);
+            return true;
+        }
+
+        public void UnassignFromBuilding()
+        {
+            if (AssignedBuilding != null)
+                AssignedBuilding.RemoveWorker(this);
+        }
+
+        internal void SetAssignedBuilding(BaseBuilding building) => AssignedBuilding = building;
+
+        protected override void OnDestroy()
+        {
+            UnassignFromBuilding();
+            base.OnDestroy();
+        }
 
         protected override void Start()
         {
@@ -39,6 +62,7 @@ namespace Code.Units
 
         public void Gather(GatherableSupply supply)
         {
+            UnassignFromBuilding();
             SetBTVariable(BTVariables.GatherableSupply, supply);
             SetBTVariable(BTVariables.TargetGameObject, supply.gameObject);
             SetBTVariable(BTVariables.Command, UnitCommands.Gather);
@@ -46,6 +70,7 @@ namespace Code.Units
 
         public void ReturnSupplies(GameObject targetGameObject)
         {
+            UnassignFromBuilding();
             SetBTVariable(BTVariables.TargetGameObject, targetGameObject);
             SetBTVariable(BTVariables.Command, UnitCommands.ReturnSupplies);
         }
@@ -54,6 +79,7 @@ namespace Code.Units
 
         public GameObject ConstructBuilding(BuildingSO building, Vector3 targetLocation)
         {
+            UnassignFromBuilding();
             GameObject instance = Instantiate(building.ConstructionDummy, targetLocation, Quaternion.identity);
             if (!instance.TryGetComponent(out ConstructionDummy dummy))
             {
@@ -87,6 +113,7 @@ namespace Code.Units
 
         public void ResumeConstruction(ConstructionDummy building)
         {
+            UnassignFromBuilding();
             SetBTVariable(BTVariables.TargetLocation, building.transform.position);
             SetBTVariable(BTVariables.ConstructionDummy, building);
             SetBTVariable(BTVariables.ConstructBuildingSO, building.BuildingSo);

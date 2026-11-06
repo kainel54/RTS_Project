@@ -12,11 +12,17 @@ namespace Code.Units
         public const int MAX_QUEUE_SIZE = 5;
         private List<UnitSO> _buildingQueue = new List<UnitSO>(MAX_QUEUE_SIZE);
         private List<SupplySO> _supplyQueue = new List<SupplySO>(MAX_QUEUE_SIZE);
+        private readonly List<Worker> _assignedWorkers = new List<Worker>();
         private Coroutine _supplyCoroutine;
+        private Coroutine _workerProductionCoroutine;
         public int QueueSize => _buildingQueue.Count;
         public int SupplyQueueSize => _supplyQueue.Count;
         public UnitSO[] UnitQueue => _buildingQueue.ToArray();
         public SupplySO[] SupplyQueue => _supplyQueue.ToArray();
+        public Worker[] AssignedWorkers => _assignedWorkers.ToArray();
+        public int AssignedWorkerCount => _assignedWorkers.Count;
+        public int WorkerCapacity => AbstractUnitData is BuildingSO buildingData ? buildingData.WorkerCapacity : 0;
+        public bool HasAvailableWorkerSlot => AssignedWorkerCount < WorkerCapacity;
         [field: SerializeField] public float CurrentQueueStartTime { get; private set; }
         [field: SerializeField] public UnitSO UnitSOBeingBuilt { get; private set; }
         [field: SerializeField] public SupplySO SupplySOBeingBuilt { get; private set; }
@@ -25,6 +31,7 @@ namespace Code.Units
         public delegate void SupplyQueueUpdatedEvent(SupplySO[] suppliesInQueue);
         public event QueueUpdatedEvent OnQueueUpdated;
         public event SupplyQueueUpdatedEvent OnSupplyQueueUpdated;
+        public event System.Action<Worker[]> AssignedWorkersUpdated;
 
         protected override void Start()
         {
@@ -35,7 +42,70 @@ namespace Code.Units
         protected override void OnDestroy()
         {
             PopulationSystem.Instance?.UnregisterBuilding(this);
+            foreach (Worker worker in _assignedWorkers.ToArray())
+                worker?.SetAssignedBuilding(null);
+            _assignedWorkers.Clear();
             base.OnDestroy();
+        }
+
+        public bool TryAssignWorker(Worker worker)
+        {
+            if (worker == null || WorkerCapacity <= 0) return false;
+
+            if (worker.AssignedBuilding == this) return true;
+            if (!HasAvailableWorkerSlot) return false;
+
+            worker.AssignedBuilding?.RemoveWorker(worker);
+            _assignedWorkers.Add(worker);
+            worker.SetAssignedBuilding(this);
+            AssignedWorkersUpdated?.Invoke(AssignedWorkers);
+            UpdateWorkerProduction();
+            return true;
+        }
+
+        public void RemoveWorker(Worker worker)
+        {
+            if (worker == null || !_assignedWorkers.Remove(worker)) return;
+
+            if (worker.AssignedBuilding == this)
+                worker.SetAssignedBuilding(null);
+
+            AssignedWorkersUpdated?.Invoke(AssignedWorkers);
+            UpdateWorkerProduction();
+        }
+
+        private void UpdateWorkerProduction()
+        {
+            if (AbstractUnitData is not BuildingSO buildingData || buildingData.WorkerProductionSupply == null
+                || _assignedWorkers.Count == 0)
+            {
+                if (_workerProductionCoroutine != null)
+                {
+                    StopCoroutine(_workerProductionCoroutine);
+                    _workerProductionCoroutine = null;
+                }
+
+                return;
+            }
+
+            if (_workerProductionCoroutine == null)
+                _workerProductionCoroutine = StartCoroutine(ProduceWithWorkers(buildingData));
+        }
+
+        private IEnumerator ProduceWithWorkers(BuildingSO buildingData)
+        {
+            while (_assignedWorkers.Count > 0 && buildingData.WorkerProductionSupply != null)
+            {
+                yield return new WaitForSeconds(buildingData.WorkerProductionInterval);
+
+                if (_assignedWorkers.Count > 0)
+                {
+                    int amount = buildingData.WorkerProductionAmount * _assignedWorkers.Count;
+                    Bus<SupplyEvent>.Raise(new SupplyEvent(amount, buildingData.WorkerProductionSupply));
+                }
+            }
+
+            _workerProductionCoroutine = null;
         }
         
         public void BuildUnit(UnitSO unitToBuild)

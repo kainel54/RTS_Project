@@ -3551,6 +3551,8 @@ MonoBehaviour:
   mineralText: {fileID: 1145715556}
   gasSO: {fileID: 11400000, guid: c18de99f884b2bb4b96ba169349425d6, type: 2}
   gasText: {fileID: 1912896029}
+  foodSO: {fileID: 11400000, guid: d1cd44e192c746b69fb86b213086b1d4, type: 2}
+  foodText: {fileID: 0}
 --- !u!114 &1379998729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4116,23 +4118,12 @@ MonoBehaviour:
   stoneSO: {fileID: 11400000, guid: c18de99f884b2bb4b96ba169349425d6, type: 2}
   ironOreSO: {fileID: 0}
   ironIngotSO: {fileID: 0}
+  foodSO: {fileID: 11400000, guid: d1cd44e192c746b69fb86b213086b1d4, type: 2}
   <WoodAmount>k__BackingField: 1000
   <StoneAmount>k__BackingField: 1000
   <IronOreAmount>k__BackingField: 0
   <IronIngotAmount>k__BackingField: 0
---- !u!114 &2039481110
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1623626084}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2bca928b42448d3aeb516518a08b4bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startingPopulationCap: 5
+  <FoodAmount>k__BackingField: 0
 --- !u!4 &1623626086
 Transform:
   m_ObjectHideFlags: 0
@@ -4806,6 +4797,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2039481110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1623626084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2bca928b42448d3aeb516518a08b4bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startingPopulationCap: 5
+  foodConsumptionInterval: 10
+  foodPerPopulationPerInterval: 1
+  <PopulationIcon>k__BackingField: {fileID: 21300000, guid: d2b771480eece46cca4f48a40e491c5c, type: 3}
 --- !u!1 &2047146387
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,7 +13,7 @@ namespace Code.Commands
 
         public override bool CanHandle(CommandContext context)
         {
-            return context.Commandable is BaseBuilding { SupplyQueueSize: < BaseBuilding.MAX_QUEUE_SIZE }
+            return context.Commandable is BaseBuilding { SupplyQueueSize: < BaseBuilding.MAX_QUEUE_SIZE, AssignedWorkerCount: > 0 }
                    && UserSupplies.Instance != null
                    && Cost != null
                    && Supply != null
@@ -24,6 +24,7 @@ namespace Code.Commands
         {
             if (context.Commandable is not BaseBuilding building
                 || building.SupplyQueueSize >= BaseBuilding.MAX_QUEUE_SIZE
+                || building.AssignedWorkerCount == 0
                 || UserSupplies.Instance == null
                 || Cost == null
                 || Supply == null

@@ -15,5 +15,7 @@ namespace Code.Units
         [field: SerializeField] public SupplySO IronOreSO { get; private set; }
         [field: SerializeField] public int IronIngot { get; private set; } = 0;
         [field: SerializeField] public SupplySO IronIngotSO { get; private set; }
+        [field: SerializeField] public int Food { get; private set; } = 0;
+        [field: SerializeField] public SupplySO FoodSO { get; private set; }
     }
 }
