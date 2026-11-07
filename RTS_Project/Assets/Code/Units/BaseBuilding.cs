@@ -59,6 +59,7 @@ namespace Code.Units
             _assignedWorkers.Add(worker);
             worker.SetAssignedBuilding(this);
             AssignedWorkersUpdated?.Invoke(AssignedWorkers);
+            Bus<WorkerAssignedEvent>.Raise(new WorkerAssignedEvent(AbstractUnitData as BuildingSO));
             UpdateWorkerProduction();
             return true;
         }

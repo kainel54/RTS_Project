@@ -61,7 +61,7 @@ namespace Code.Players
         private void AddDebugSupply(SupplySO supply)
         {
             if (supply != null)
-                HandleSupplyEvent(new SupplyEvent(DebugSupplyAmount, supply));
+                Bus<SupplyEvent>.Raise(new SupplyEvent(DebugSupplyAmount, supply));
         }
 
         private void OnDestroy()

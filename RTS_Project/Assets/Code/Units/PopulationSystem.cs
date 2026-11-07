@@ -121,7 +121,10 @@ namespace Code.Units
         public void RegisterBuilding(BaseBuilding building)
         {
             if (building != null && _buildings.Add(building))
+            {
                 NotifyPopulationChanged();
+                Bus<BuildingCompletedEvent>.Raise(new BuildingCompletedEvent(building.AbstractUnitData as BuildingSO));
+            }
         }
 
         public void UnregisterBuilding(BaseBuilding building)
