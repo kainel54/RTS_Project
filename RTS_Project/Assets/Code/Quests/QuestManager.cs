@@ -1,5 +1,7 @@
 using Code.CoreSystem;
+using Code.Environments;
 using Code.GameEvents;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -13,6 +15,8 @@ namespace Code.Quests
 
         private int _objectiveIndex;
         private int _objectiveProgress;
+        private bool _grantingReward;
+        private Coroutine _completionMessageRoutine;
 
         private void Awake()
         {
@@ -40,6 +44,8 @@ namespace Code.Quests
 
         private void HandleSupply(SupplyEvent evt)
         {
+            if (_grantingReward) return;
+
             QuestObjectiveDefinition objective = CurrentObjective;
             if (objective == null || objective.Type != QuestObjectiveType.CollectSupply
                 || objective.Supply != evt.SupplyType || evt.Amount <= 0) return;
@@ -83,10 +89,52 @@ namespace Code.Quests
             _objectiveProgress = Mathf.Min(objective.TargetCount, _objectiveProgress + amount);
             if (_objectiveProgress >= objective.TargetCount)
             {
+                SupplySO rewardSupply = objective.RewardSupply;
+                int rewardAmount = objective.RewardAmount;
                 _objectiveIndex++;
                 _objectiveProgress = 0;
+
+                if (rewardSupply != null && rewardAmount > 0)
+                    GrantReward(rewardSupply, rewardAmount);
+
+                ShowCompletionMessage(rewardSupply, rewardAmount);
+                return;
             }
 
+            RefreshUI();
+        }
+
+        private void GrantReward(SupplySO supply, int amount)
+        {
+            _grantingReward = true;
+            try
+            {
+                Bus<SupplyEvent>.Raise(new SupplyEvent(amount, supply));
+            }
+            finally
+            {
+                _grantingReward = false;
+            }
+        }
+
+        private void ShowCompletionMessage(SupplySO rewardSupply, int rewardAmount)
+        {
+            if (questObjective == null) return;
+
+            if (_completionMessageRoutine != null)
+                StopCoroutine(_completionMessageRoutine);
+
+            string rewardMessage = rewardSupply != null && rewardAmount > 0
+                ? $" Reward: {rewardSupply.name.Replace(" Data", "")} +{rewardAmount}"
+                : string.Empty;
+            questObjective.SetText($"QuestComplete!{rewardMessage}");
+            _completionMessageRoutine = StartCoroutine(RefreshAfterCompletionMessage());
+        }
+
+        private IEnumerator RefreshAfterCompletionMessage()
+        {
+            yield return new WaitForSeconds(2f);
+            _completionMessageRoutine = null;
             RefreshUI();
         }
 
