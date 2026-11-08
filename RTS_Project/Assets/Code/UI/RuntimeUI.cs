@@ -105,10 +105,12 @@ namespace Code.UI
                     {
                         bool hasSupplyProduction = baseBuilding.AvailableCommands != null
                                                    && baseBuilding.AvailableCommands.Any(command => command is BuildSupplyCommandSO);
+                        bool hasUnitProduction = baseBuilding.AvailableCommands != null
+                                                 && baseBuilding.AvailableCommands.Any(command => command is BuildUnitCommandSO);
 
                         if (hasSupplyProduction)
                             buildSupplyContainerUI.EnableFor(baseBuilding);
-                        else
+                        else if (hasUnitProduction)
                             buildUnitContainerUI.EnableFor(baseBuilding);
                     }
                 }

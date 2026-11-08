@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00b94ebb33711d843b4995b8da6adc9d, type: 3}
+  m_Name: Build Library command
+  m_EditorClassIdentifier: 
+  <CommandName>k__BackingField: Library
+  <CommandIcon>k__BackingField: {fileID: 21300000, guid: 70123f5bc262c438589838a77770225c, type: 3}
+  <IsSingleUnitCommand>k__BackingField: 1
+  <SlotIndex>k__BackingField: 5
+  <RequireClickToActivate>k__BackingField: 1
+  <BuildingData>k__BackingField: {fileID: 11400000, guid: 61f76979104176b4ea5536e9648f0e1c, type: 2}
+  <GhostPrefab>k__BackingField: {fileID: 6209884437283206024, guid: 5c83fcfb46b490f4fb6cb97ecf92e944, type: 3}
+  <Restrictions>k__BackingField:
+  - {fileID: 11400000, guid: 16e83967a7b83444db46807e0e6a6baf, type: 2}

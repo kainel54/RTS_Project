@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71ed1cd3106a004458fd2ff858b6c9f0, type: 3}
+  m_Name: LibraryData
+  m_EditorClassIdentifier: 
+  <Prefab>k__BackingField: {fileID: 100000, guid: a219455911288e84da9a9c5f55fd95c6, type: 3}
+  <BuildTime>k__BackingField: 5
+  <Icon>k__BackingField: {fileID: 21300000, guid: 70123f5bc262c438589838a77770225c, type: 3}
+  <Cost>k__BackingField: {fileID: 11400000, guid: 609f1ba91954a8d428a9efe29bc6a8ac, type: 2}
+  <ConstructionDummy>k__BackingField: {fileID: 3227498430549874466, guid: 1fb89f32f05358f4eb5f0c7af72df59f, type: 3}
+  <PopulationBonus>k__BackingField: 0
+  <WorkerCapacity>k__BackingField: 2
+  <WorkerProductionSupply>k__BackingField: {fileID: 0}
+  <WorkerProductionInterval>k__BackingField: 10
+  <WorkerProductionAmount>k__BackingField: 8

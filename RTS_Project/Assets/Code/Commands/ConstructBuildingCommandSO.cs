@@ -1,4 +1,5 @@
 using Code.Players;
+using Code.Research;
 using Code.Units;
 using Newtonsoft.Json.Linq;
 using System;
@@ -27,6 +28,7 @@ namespace Code.Commands
             }
 
             return UserSupplies.Instance != null
+           && (ResearchManager.Instance == null || ResearchManager.Instance.IsBuildingUnlocked(BuildingData))
            && UserSupplies.Instance.HasEnoughSupplies(BuildingData.Cost)
            && AllRestrictionPass(context.Hit.point);
 
@@ -42,6 +44,7 @@ namespace Code.Commands
                 buildingConstructor.ResumeConstruction(dummy);
             }
             else if (UserSupplies.Instance != null
+                && (ResearchManager.Instance == null || ResearchManager.Instance.IsBuildingUnlocked(BuildingData))
                 && UserSupplies.Instance.HasEnoughSupplies(BuildingData.Cost))
             {
                 buildingConstructor.ConstructBuilding(BuildingData, context.Hit.point);
