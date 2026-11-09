@@ -12,7 +12,19 @@ namespace Code.Units
         [SerializeField, ColorUsage(true, true)] private Color availableToPlaceTintColor = new Color(0.2f, 0.65f, 1, 1);
         [SerializeField, ColorUsage(true, true)] private Color availableToPlaceFresnelColor = new Color(0.8f, 1.5f, 2.2f, 1);
         [SerializeField] private MeshRenderer ghostRenderer;
+        private MaterialPropertyBlock _propertyBlock;
         private bool _isPassRestriction = false;
+
+        private void Awake()
+        {
+            // Some ghost prefabs reference a renderer from the source building prefab.
+            // Resolve the renderer from this instantiated ghost instead.
+            if (ghostRenderer == null || (ghostRenderer.transform != transform
+                && !ghostRenderer.transform.IsChildOf(transform)))
+                ghostRenderer = GetComponentInChildren<MeshRenderer>(true);
+
+            _propertyBlock = new MaterialPropertyBlock();
+        }
 
         public void SetPassRestriction(bool isPass)
         {
@@ -20,8 +32,16 @@ namespace Code.Units
 
             _isPassRestriction = isPass;
 
-            ghostRenderer.material.SetColor(TINT, _isPassRestriction ? availableToPlaceTintColor : errorTintColor);
-            ghostRenderer.material.SetColor(FRESNEL, _isPassRestriction ? availableToPlaceFresnelColor : errorFresnelColor);
+            if (ghostRenderer == null)
+            {
+                Debug.LogWarning($"{name}: GhostPlacement에 사용할 MeshRenderer가 없습니다.", this);
+                return;
+            }
+
+            ghostRenderer.GetPropertyBlock(_propertyBlock);
+            _propertyBlock.SetColor(TINT, _isPassRestriction ? availableToPlaceTintColor : errorTintColor);
+            _propertyBlock.SetColor(FRESNEL, _isPassRestriction ? availableToPlaceFresnelColor : errorFresnelColor);
+            ghostRenderer.SetPropertyBlock(_propertyBlock);
         }
     }
 }

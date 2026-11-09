@@ -4,6 +4,7 @@ using Code.Environments;
 using Code.GameEvents;
 using Code.Units.BT;
 using Code.Units.BT.Events;
+using Code.Units.Animations;
 using Unity.Behavior;
 using UnityEngine;
 
@@ -13,12 +14,15 @@ namespace Code.Units
     {
         [SerializeField] private GameObject backPackObject;
         [SerializeField] private BaseCommandSO[] cancelConstructionCommandSet;
+        [SerializeField] private ParamSO assignedAnimationParameter;
+        [SerializeField, Min(0.1f)] private float assignedAnimationPeriod = 1f;
         public bool HasSupplies => backPackObject.activeSelf;
         public int CurrentSupplyAmount => TryGetBTVariable<int>(BTVariables.SupplyAmountHeld,
             out BlackboardVariable<int> amountVariable) ? amountVariable.Value : 0;
         public BaseBuilding AssignedBuilding { get; private set; }
         private StorageBuilding _reservedStorage;
         private int _reservedStorageAmount;
+        private float _assignedAnimationTimer;
         public bool IsBuilding=>TryGetBTVariable(BTVariables.Command,out BlackboardVariable<UnitCommands> commandValue)&&
             commandValue.Value==UnitCommands.ConstructBuilding;
 
@@ -26,6 +30,24 @@ namespace Code.Units
         {
             ReleaseStorageReservation();
             base.MoveTo(position);
+        }
+
+        private void Update()
+        {
+            if (AssignedBuilding == null || Agent == null || UnitAnimator == null
+                || assignedAnimationParameter == null || Agent.pathPending)
+                return;
+
+            if (Agent.hasPath && Agent.remainingDistance > Agent.stoppingDistance)
+                return;
+            if (!Agent.hasPath && Vector3.Distance(transform.position, AssignedBuilding.transform.position) > 2f)
+                return;
+
+            _assignedAnimationTimer += Time.deltaTime;
+            if (_assignedAnimationTimer < assignedAnimationPeriod) return;
+
+            _assignedAnimationTimer = 0f;
+            UnitAnimator.SetParam(assignedAnimationParameter);
         }
 
         public bool AssignToBuilding(BaseBuilding building)
@@ -43,7 +65,11 @@ namespace Code.Units
                 AssignedBuilding.RemoveWorker(this);
         }
 
-        internal void SetAssignedBuilding(BaseBuilding building) => AssignedBuilding = building;
+        internal void SetAssignedBuilding(BaseBuilding building)
+        {
+            AssignedBuilding = building;
+            _assignedAnimationTimer = assignedAnimationPeriod;
+        }
 
         protected override void OnDestroy()
         {
