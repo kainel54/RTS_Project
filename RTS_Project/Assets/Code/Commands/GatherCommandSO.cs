@@ -38,6 +38,6 @@ namespace Code.Commands
 
         private bool IsGatherableSupplyOrKeep(Collider collider) => collider.TryGetComponent(out GatherableSupply _) || IsKeep(collider);
 
-        private bool IsKeep(Collider collider) => collider.TryGetComponent(out BaseBuilding building)&&building.AbstractUnitData.Equals(keepDataSO);
+        private bool IsKeep(Collider collider) => collider.TryGetComponent(out StorageBuilding _);
     }
 }

@@ -20,7 +20,7 @@ namespace Code.Quests
 
         private void Awake()
         {
-            Bus<SupplyEvent>.OnEvent += HandleSupply;
+            Bus<SupplyAcceptedEvent>.OnEvent += HandleSupply;
             Bus<BuildingCompletedEvent>.OnEvent += HandleBuildingCompleted;
             Bus<BuildingUnlockedEvent>.OnEvent += HandleBuildingUnlocked;
             Bus<WorkerAssignedEvent>.OnEvent += HandleWorkerAssigned;
@@ -38,13 +38,13 @@ namespace Code.Quests
 
         private void OnDestroy()
         {
-            Bus<SupplyEvent>.OnEvent -= HandleSupply;
+            Bus<SupplyAcceptedEvent>.OnEvent -= HandleSupply;
             Bus<BuildingCompletedEvent>.OnEvent -= HandleBuildingCompleted;
             Bus<BuildingUnlockedEvent>.OnEvent -= HandleBuildingUnlocked;
             Bus<WorkerAssignedEvent>.OnEvent -= HandleWorkerAssigned;
         }
 
-        private void HandleSupply(SupplyEvent evt)
+        private void HandleSupply(SupplyAcceptedEvent evt)
         {
             if (_grantingReward) return;
 

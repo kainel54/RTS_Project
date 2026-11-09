@@ -54,7 +54,7 @@ namespace Code.Units
             Bus<UnitDeSpawnEvent>.Raise(new UnitDeSpawnEvent(this));
         }
 
-        public void MoveTo(Vector3 position)
+        public virtual void MoveTo(Vector3 position)
         {
             SetBTVariable(BTVariables.TargetLocation, position);
             SetBTVariable(BTVariables.Command, UnitCommands.Move);

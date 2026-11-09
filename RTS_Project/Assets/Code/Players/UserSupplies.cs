@@ -25,8 +25,39 @@ namespace Code.Players
         [field: SerializeField] public int IronIngotAmount { get; private set; }
         [field: SerializeField] public int FoodAmount { get; private set; }
 
+        public int TotalStorageCapacity
+        {
+            get
+            {
+                int capacity = 0;
+                foreach (StorageBuilding storage in StorageBuilding.ActiveStorages)
+                {
+                    if (storage != null)
+                        capacity += storage.Capacity;
+                }
+
+                return capacity;
+            }
+        }
+
+        public int UsedStorageCapacity
+        {
+            get
+            {
+                int used = 0;
+                foreach (StorageBuilding storage in StorageBuilding.ActiveStorages)
+                {
+                    if (storage != null)
+                        used += storage.UsedCapacity;
+                }
+
+                return used;
+            }
+        }
+
         public delegate void SupplyChanged(int amount, SupplySO supplyType);
         public event SupplyChanged OnSupplyChanged; 
+        public event Action<int, int> OnStorageCapacityChanged;
 
         private void Awake()
         {
@@ -71,34 +102,84 @@ namespace Code.Players
 
         private void HandleSupplyEvent(SupplyEvent evt)
         {
-            if (evt.SupplyType.Equals(woodSO))
+            if (evt.Amount <= 0 || evt.SupplyType == null) return;
+
+            SupplySO configuredSupply = GetConfiguredSupply(evt.SupplyType);
+            if (configuredSupply == null) return;
+
+            int acceptedAmount = StoreSupply(evt.Amount, evt.Destination);
+            if (acceptedAmount <= 0) return;
+
+            AddSupplyAmount(configuredSupply, acceptedAmount);
+            OnSupplyChanged?.Invoke(GetSupplyAmount(configuredSupply), configuredSupply);
+            Bus<SupplyAcceptedEvent>.Raise(new SupplyAcceptedEvent(acceptedAmount, configuredSupply));
+        }
+
+        private SupplySO GetConfiguredSupply(SupplySO supply)
+        {
+            if (supply == woodSO) return woodSO;
+            if (supply == stoneSO) return stoneSO;
+            if (supply == ironOreSO) return ironOreSO;
+            if (supply == ironIngotSO) return ironIngotSO;
+            if (supply == foodSO) return foodSO;
+            return null;
+        }
+
+        private int StoreSupply(int amount, StorageBuilding destination)
+        {
+            int stored = 0;
+            if (destination != null)
+                stored = destination.StoreReservedCapacity(amount);
+
+            if (stored < amount)
+                stored += StoreAcrossAvailableStorage(amount - stored);
+
+            return stored;
+        }
+
+        private int StoreAcrossAvailableStorage(int amount)
+        {
+            int stored = 0;
+            foreach (StorageBuilding storage in StorageBuilding.ActiveStorages)
             {
-                WoodAmount += evt.Amount;
-                OnSupplyChanged?.Invoke(WoodAmount, woodSO);
+                if (storage == null || stored >= amount) continue;
+                stored += storage.StoreUnreservedCapacity(amount - stored);
             }
 
-            if (evt.SupplyType.Equals(stoneSO))
-            {
-                StoneAmount += evt.Amount;
-                OnSupplyChanged?.Invoke(StoneAmount, stoneSO);
-            }
+            return stored;
+        }
 
-            if (evt.SupplyType.Equals(ironOreSO))
-            {
-                IronOreAmount += evt.Amount;
-                OnSupplyChanged?.Invoke(IronOreAmount, ironOreSO);
-            }
+        private void AddSupplyAmount(SupplySO supply, int amount)
+        {
+            if (supply == woodSO) WoodAmount += amount;
+            else if (supply == stoneSO) StoneAmount += amount;
+            else if (supply == ironOreSO) IronOreAmount += amount;
+            else if (supply == ironIngotSO) IronIngotAmount += amount;
+            else if (supply == foodSO) FoodAmount += amount;
+        }
 
-            if (evt.SupplyType.Equals(ironIngotSO))
-            {
-                IronIngotAmount += evt.Amount;
-                OnSupplyChanged?.Invoke(IronIngotAmount, ironIngotSO);
-            }
+        private int GetSupplyAmount(SupplySO supply)
+        {
+            if (supply == woodSO) return WoodAmount;
+            if (supply == stoneSO) return StoneAmount;
+            if (supply == ironOreSO) return IronOreAmount;
+            if (supply == ironIngotSO) return IronIngotAmount;
+            if (supply == foodSO) return FoodAmount;
+            return 0;
+        }
 
-            if (evt.SupplyType.Equals(foodSO))
+        public void NotifyStorageCapacityChanged()
+        {
+            OnStorageCapacityChanged?.Invoke(UsedStorageCapacity, TotalStorageCapacity);
+        }
+
+        private void ReleaseStorageCapacity(int amount)
+        {
+            int remaining = Mathf.Max(0, amount);
+            foreach (StorageBuilding storage in StorageBuilding.ActiveStorages)
             {
-                FoodAmount += evt.Amount;
-                OnSupplyChanged?.Invoke(FoodAmount, foodSO);
+                if (storage == null || remaining <= 0) continue;
+                remaining -= storage.RemoveStoredCapacity(remaining);
             }
         }
 
@@ -122,6 +203,8 @@ namespace Code.Players
             IronIngotAmount -= cost.IronIngot;
             FoodAmount -= cost.Food;
 
+            ReleaseStorageCapacity(cost.Wood + cost.Stone + cost.IronOre + cost.IronIngot + cost.Food);
+
             if (cost.Wood > 0) OnSupplyChanged?.Invoke(WoodAmount, woodSO);
             if (cost.Stone > 0) OnSupplyChanged?.Invoke(StoneAmount, stoneSO);
             if (cost.IronOre > 0) OnSupplyChanged?.Invoke(IronOreAmount, ironOreSO);
@@ -137,6 +220,7 @@ namespace Code.Players
 
             int consumedAmount = Mathf.Min(requestedAmount, FoodAmount);
             FoodAmount -= consumedAmount;
+            ReleaseStorageCapacity(consumedAmount);
             OnSupplyChanged?.Invoke(FoodAmount, foodSO);
             return consumedAmount;
         }
