@@ -23,18 +23,20 @@ namespace Code.Units.BT.Actions
         private float _enterTime; //캐기 시작한 시간
         private float _currentAnimationTime;
         private UnitAnimator _animator;
+        private bool _hasGatherLock;
 
         protected override Status OnStart()
         {
-            if (GatherableSupply.Value == null)
+            if (Unit.Value == null || GatherableSupply.Value == null || GatherableSupply.Value.SupplyData == null
+                || !GatherableSupply.Value.BeginGather())
                 return Status.Failure;
 
+            _hasGatherLock = true;
             _enterTime = Time.time;
             _animator = Unit.Value.UnitAnimator;
             _currentAnimationTime = 0;
             _animator?.SetParam(AttackParameter.Value);
 
-            GatherableSupply.Value.BeginGather();
             SupplyType.Value = GatherableSupply.Value.SupplyData; //캐기 시작한 광물의 타입을 기록
             return Status.Running;
         }
@@ -62,7 +64,7 @@ namespace Code.Units.BT.Actions
 
         protected override void OnEnd()
         {
-            if (GatherableSupply.Value == null) return;
+            if (!_hasGatherLock || GatherableSupply.Value == null) return;
 
             if (CurrentStatus == Status.Success)
             {
@@ -72,6 +74,8 @@ namespace Code.Units.BT.Actions
             {
                 GatherableSupply.Value.AbortGather();
             }
+
+            _hasGatherLock = false;
         }
     }
 }

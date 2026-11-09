@@ -4887,6 +4887,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1730631087}
+  - component: {fileID: 1847691273}
   m_Layer: 0
   m_Name: CenterBase
   m_TagString: Untagged
@@ -4911,6 +4912,30 @@ Transform:
   - {fileID: 1018134556}
   m_Father: {fileID: 730839463}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1847691273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730631086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e9f1bd0f2ec4b058d02c851be064e21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resources:
+  - supply: {fileID: 11400000, guid: 5c62011888c83ce4c924b94c26bdd21c, type: 2}
+    minCount: 7
+    maxCount: 10
+  - supply: {fileID: 11400000, guid: c18de99f884b2bb4b96ba169349425d6, type: 2}
+    minCount: 3
+    maxCount: 5
+  minSpawnRadius: 15
+  maxSpawnRadius: 40
+  navMeshSampleDistance: 3
+  placementCheckRadius: 3
+  attemptsPerResource: 50
 --- !u!114 &1751656586 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2268680659236010790, guid: ca1e828a997925a4ab5065c26c433b26, type: 3}

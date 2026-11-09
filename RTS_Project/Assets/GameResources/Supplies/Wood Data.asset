@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40a1b700ff6e42c7be53eb6d6e059bd5, type: 3}
   m_Name: Wood Data
   m_EditorClassIdentifier: 
+  <ResourcePrefab>k__BackingField: {fileID: 5138684641560848303, guid: 150be8da06b5c854d8f614096b7dba62, type: 3}
   <MaxAmount>k__BackingField: 1500
   <AmountPerGather>k__BackingField: 8
   <BaseGatherTime>k__BackingField: 1.5
