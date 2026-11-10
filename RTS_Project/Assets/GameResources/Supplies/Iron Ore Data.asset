@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Iron Ore Data
   m_EditorClassIdentifier: 
   <Icon>k__BackingField: {fileID: 21300000, guid: 5cf484e8f84c4da6beb7a87bcac2b09b, type: 3}
+  <ResourcePrefab>k__BackingField: {fileID: 776192361446758805, guid: 5f490f1abc6e4ba8af2f15f91b724cca, type: 3}
   <MaxAmount>k__BackingField: 5000
   <AmountPerGather>k__BackingField: 8
   <BaseGatherTime>k__BackingField: 1.5
