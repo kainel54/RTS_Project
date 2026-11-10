@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40a1b700ff6e42c7be53eb6d6e059bd5, type: 3}
   m_Name: Iron Ore Data
   m_EditorClassIdentifier: 
-  <Icon>k__BackingField: {fileID: 21300000, guid: d2b771480eece46cca4f48a40e491c5c, type: 3}
+  <Icon>k__BackingField: {fileID: 21300000, guid: 5cf484e8f84c4da6beb7a87bcac2b09b, type: 3}
   <MaxAmount>k__BackingField: 5000
   <AmountPerGather>k__BackingField: 8
   <BaseGatherTime>k__BackingField: 1.5

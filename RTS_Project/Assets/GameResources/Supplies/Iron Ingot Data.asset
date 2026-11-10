@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40a1b700ff6e42c7be53eb6d6e059bd5, type: 3}
   m_Name: Iron Ingot Data
   m_EditorClassIdentifier: 
-  <Icon>k__BackingField: {fileID: 21300000, guid: 248582e7af9a74a94b873333d58f79cd, type: 3}
+  <Icon>k__BackingField: {fileID: 21300000, guid: b79d850013b941549a24b0b74a7ed7ed, type: 3}
   <MaxAmount>k__BackingField: 5000
   <AmountPerGather>k__BackingField: 8
   <BaseGatherTime>k__BackingField: 1.5

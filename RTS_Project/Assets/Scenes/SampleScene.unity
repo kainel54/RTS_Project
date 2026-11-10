@@ -4771,7 +4771,7 @@ PrefabInstance:
     - target: {fileID: 3847662299665070212, guid: a8d8e4c26656990429679dfb152ce33d, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 34af3d0ef65e24fb89c8cbfcfc1370a1, type: 3}
+      objectReference: {fileID: 21300000, guid: 1979090206e6470288df89650e29817b, type: 3}
     - target: {fileID: 4523398533548389477, guid: a8d8e4c26656990429679dfb152ce33d, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -4935,7 +4935,9 @@ MonoBehaviour:
   maxSpawnRadius: 40
   navMeshSampleDistance: 3
   placementCheckRadius: 3
+  buildingClearanceRadius: 5
   attemptsPerResource: 50
+  regenerationInterval: 60
 --- !u!114 &1751656586 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2268680659236010790, guid: ca1e828a997925a4ab5065c26c433b26, type: 3}
@@ -5199,7 +5201,7 @@ PrefabInstance:
     - target: {fileID: 3847662299665070212, guid: a8d8e4c26656990429679dfb152ce33d, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 34af3d0ef65e24fb89c8cbfcfc1370a1, type: 3}
+      objectReference: {fileID: 21300000, guid: b0eed887c2e5450dac8f93a69865d3eb, type: 3}
     - target: {fileID: 4523398533548389477, guid: a8d8e4c26656990429679dfb152ce33d, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -5962,7 +5964,7 @@ MonoBehaviour:
   startingPopulationCap: 5
   foodConsumptionInterval: 10
   foodPerPopulationPerInterval: 1
-  <PopulationIcon>k__BackingField: {fileID: 21300000, guid: c6cf8ff34f7744949b7a6c9888bad638, type: 3}
+  <PopulationIcon>k__BackingField: {fileID: 21300000, guid: 1979090206e6470288df89650e29817b, type: 3}
 --- !u!1 &2047146387
 GameObject:
   m_ObjectHideFlags: 0

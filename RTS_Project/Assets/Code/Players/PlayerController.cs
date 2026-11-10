@@ -61,6 +61,8 @@ namespace Code.Players
 
         private void OnDestroy()
         {
+            ClearGhostInstance();
+
             // inputReader.OnMouseLeftButton -= HandleMouseLeftButton;
             inputReader.OnMouseRightButton -= HandleMouseRightButton;
 
@@ -84,7 +86,10 @@ namespace Code.Players
 
         private void HandleCommandSelect(CommandSelectEvent evt)
         {
+            ClearGhostInstance();
             _activeCommand = evt.Command;
+
+            if (_activeCommand == null) return;
 
             if (_activeCommand.RequireClickToActivate == false)
             {
@@ -100,12 +105,7 @@ namespace Code.Players
 
         private void ActivateCommand(RaycastHit hit)
         {
-            if(_ghostInstance != null)
-            {
-                Destroy(_ghostInstance.gameObject);
-                _ghostInstance = null;
-                
-            }
+            ClearGhostInstance();
 
             List<AbstractCommandable> abstractUnits =
                 _selectedUnits.OfType<AbstractCommandable>().ToList();
@@ -119,6 +119,16 @@ namespace Code.Players
             _activeCommand = null;
         }
 
+        private void ClearGhostInstance()
+        {
+            if (_ghostInstance == null) return;
+
+            GameObject ghostObject = _ghostInstance.gameObject;
+            _ghostInstance = null;
+            ghostObject.SetActive(false);
+            Destroy(ghostObject);
+        }
+
         private void HandleGhostInstance()
         {
             if (_ghostInstance == null)
@@ -127,8 +137,7 @@ namespace Code.Players
 
             if (Keyboard.current.escapeKey.wasReleasedThisFrame)
             {
-                Destroy(_ghostInstance.gameObject);
-                _ghostInstance = null;
+                ClearGhostInstance();
                 _activeCommand = null;
                 return;
             }
