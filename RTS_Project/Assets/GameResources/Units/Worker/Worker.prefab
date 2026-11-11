@@ -8820,6 +8820,7 @@ GameObject:
   - component: {fileID: 5323830393813211742}
   - component: {fileID: 2326628078950556247}
   - component: {fileID: 5996830097464796878}
+  - component: {fileID: 7483295064431972001}
   m_Layer: 6
   m_Name: Worker
   m_TagString: Untagged
@@ -8955,6 +8956,7 @@ MonoBehaviour:
   decalProjector: {fileID: 6717313651104246724}
   <AbstractUnitData>k__BackingField: {fileID: 11400000, guid: bd705f0dfae8a36469ac6dc97e4d3672, type: 2}
   <AvailableCommands>k__BackingField:
+  - {fileID: 11400000, guid: 4bb7c15542764b88bcb2f6a95e9d02cb, type: 2}
   - {fileID: 11400000, guid: a15299d51d514239a614be1c86df6237, type: 2}
   - {fileID: 11400000, guid: 0760ffe4dfd96dd47ab8b10cfa545f5d, type: 2}
   - {fileID: 11400000, guid: 79f24004e4f66b940bd648e82c4cea74, type: 2}
@@ -8976,6 +8978,25 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 21b04031a352b624984dd8e6dec06d7b, type: 2}
   assignedAnimationParameter: {fileID: 11400000, guid: 4af2d2c1a46effa44b35338f8e19c55c, type: 2}
   assignedAnimationPeriod: 1
+--- !u!114 &7483295064431972001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6303836946881162331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72b550d474a04a638e209064a42b50c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  team: 0
+  maxHealth: 100
+  damage: 10
+  attackRange: 1.5
+  attackInterval: 1
+  attackAnimation: {fileID: 11400000, guid: 4af2d2c1a46effa44b35338f8e19c55c, type: 2}
+  speedAnimationParameter: {fileID: 11400000, guid: 277ef6f446e58774a94b5abc9e7e6a5e, type: 2}
 --- !u!114 &5996830097464796878
 MonoBehaviour:
   m_ObjectHideFlags: 0

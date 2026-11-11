@@ -68,6 +68,9 @@ namespace Code.Units
 
         public void SetBTVariable<T>(BTVariables variables, T value)
         {
+            if (variables == BTVariables.Command && value is UnitCommands command && command != UnitCommands.Attack)
+                GetComponent<MeleeCombat>()?.CancelAttack();
+
             if (_variableDict.TryGetValue(variables, out var guid))
             {
                 GraphAgent.SetVariableValue(guid, value);
