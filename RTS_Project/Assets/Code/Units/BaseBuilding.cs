@@ -21,6 +21,10 @@ namespace Code.Units
         public SupplySO[] SupplyQueue => _supplyQueue.ToArray();
         public Worker[] AssignedWorkers => _assignedWorkers.ToArray();
         public int AssignedWorkerCount => _assignedWorkers.Count;
+        public bool ConsumesAssignedWorkerFor(UnitSO unit) => unit != null
+            && AbstractUnitData is BuildingSO { ConsumeAssignedWorkerPerUnit: true };
+        public bool CanQueueUnit(UnitSO unit) => unit != null && (!ConsumesAssignedWorkerFor(unit)
+            || AssignedWorkerCount > _buildingQueue.FindAll(ConsumesAssignedWorkerFor).Count);
         public int WorkerCapacity => AbstractUnitData is BuildingSO buildingData ? buildingData.WorkerCapacity : 0;
         public bool HasAvailableWorkerSlot => AssignedWorkerCount < WorkerCapacity;
         [field: SerializeField] public float CurrentQueueStartTime { get; private set; }
@@ -111,6 +115,7 @@ namespace Code.Units
         
         public void BuildUnit(UnitSO unitToBuild)
         {
+            if (!CanQueueUnit(unitToBuild) || _buildingQueue.Count >= MAX_QUEUE_SIZE) return;
             _buildingQueue.Add(unitToBuild);
             if (_buildingQueue.Count == 1)
             {
@@ -181,11 +186,32 @@ namespace Code.Units
                 
                 yield return new WaitForSeconds(UnitSOBeingBuilt.BuildTime); //빌드시간만큼 대기하고
 
-                GameObject newUnit = Instantiate(UnitSOBeingBuilt.Prefab, transform.position, Quaternion.identity);
+                Worker consumedWorker = null;
+                if (ConsumesAssignedWorkerFor(UnitSOBeingBuilt))
+                {
+                    if (_assignedWorkers.Count == 0)
+                    {
+                        Debug.LogWarning($"{name}: 훈련 완료 시 소모할 배정 유닛이 없습니다.", this);
+                        _buildingQueue.RemoveAt(0);
+                        continue;
+                    }
+                    consumedWorker = _assignedWorkers[0];
+                }
+
+                Vector3 spawnPosition = transform.position + transform.forward * 3f;
+                if (UnityEngine.AI.NavMesh.SamplePosition(spawnPosition, out var hit, 3f, UnityEngine.AI.NavMesh.AllAreas))
+                    spawnPosition = hit.position;
+                Instantiate(UnitSOBeingBuilt.Prefab, spawnPosition, Quaternion.identity);
+                if (consumedWorker != null)
+                {
+                    RemoveWorker(consumedWorker);
+                    Destroy(consumedWorker.gameObject);
+                }
                 _buildingQueue.RemoveAt(0);
             }
             
             OnQueueUpdated?.Invoke(UnitQueue);
+            UnitSOBeingBuilt = null;
         }
 
         

@@ -14,9 +14,10 @@ namespace Code.Commands
             return Unit != null
                 && context.Commandable is BaseBuilding { QueueSize: < BaseBuilding.MAX_QUEUE_SIZE }
                 && UserSupplies.Instance != null
-                && UserSupplies.Instance.HasEnoughSupplies(Unit.Cost)
+                && (Unit.Cost == null || UserSupplies.Instance.HasEnoughSupplies(Unit.Cost))
+                && context.Commandable is BaseBuilding building && building.CanQueueUnit(Unit)
                 && PopulationSystem.Instance != null
-                && PopulationSystem.Instance.CanQueue(Unit);
+                && PopulationSystem.Instance.CanQueue(Unit, building);
         }
 
         public override void Handle(CommandContext context)
@@ -26,8 +27,9 @@ namespace Code.Commands
                 || building.QueueSize >= BaseBuilding.MAX_QUEUE_SIZE
                 || UserSupplies.Instance == null
                 || PopulationSystem.Instance == null
-                || !PopulationSystem.Instance.CanQueue(Unit)
-                || !UserSupplies.Instance.TrySpendSupplies(Unit.Cost)) return;
+                || !building.CanQueueUnit(Unit)
+                || !PopulationSystem.Instance.CanQueue(Unit, building)
+                || (Unit.Cost != null && !UserSupplies.Instance.TrySpendSupplies(Unit.Cost))) return;
 
             building.BuildUnit(Unit);
         }

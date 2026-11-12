@@ -10,8 +10,7 @@ namespace Code.Quests
     {
         CollectSupply,
         CompleteBuilding,
-        AssignWorkerToBuilding,
-        CompleteResearch
+        AssignWorkerToBuilding
     }
 
     [Serializable]

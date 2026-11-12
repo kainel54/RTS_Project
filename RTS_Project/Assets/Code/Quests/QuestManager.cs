@@ -22,7 +22,6 @@ namespace Code.Quests
         {
             Bus<SupplyAcceptedEvent>.OnEvent += HandleSupply;
             Bus<BuildingCompletedEvent>.OnEvent += HandleBuildingCompleted;
-            Bus<BuildingUnlockedEvent>.OnEvent += HandleBuildingUnlocked;
             Bus<WorkerAssignedEvent>.OnEvent += HandleWorkerAssigned;
         }
 
@@ -40,7 +39,6 @@ namespace Code.Quests
         {
             Bus<SupplyAcceptedEvent>.OnEvent -= HandleSupply;
             Bus<BuildingCompletedEvent>.OnEvent -= HandleBuildingCompleted;
-            Bus<BuildingUnlockedEvent>.OnEvent -= HandleBuildingUnlocked;
             Bus<WorkerAssignedEvent>.OnEvent -= HandleWorkerAssigned;
         }
 
@@ -59,15 +57,6 @@ namespace Code.Quests
         {
             QuestObjectiveDefinition objective = CurrentObjective;
             if (objective == null || objective.Type != QuestObjectiveType.CompleteBuilding
-                || objective.Building != evt.Building) return;
-
-            AddProgress(1);
-        }
-
-        private void HandleBuildingUnlocked(BuildingUnlockedEvent evt)
-        {
-            QuestObjectiveDefinition objective = CurrentObjective;
-            if (objective == null || objective.Type != QuestObjectiveType.CompleteResearch
                 || objective.Building != evt.Building) return;
 
             AddProgress(1);

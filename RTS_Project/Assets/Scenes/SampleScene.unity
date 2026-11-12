@@ -1327,7 +1327,6 @@ GameObject:
   - component: {fileID: 581841282}
   - component: {fileID: 581841286}
   - component: {fileID: 2100000001}
-  - component: {fileID: 2100000002}
   m_Layer: 5
   m_Name: RuntimeUICanvas
   m_TagString: Untagged
@@ -4709,6 +4708,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Worker (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7483295064431972001, guid: f8cecaee0fe01c143879f5263b955b1a, type: 3}
+      propertyPath: team
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8427437326490148797, guid: f8cecaee0fe01c143879f5263b955b1a, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.34
@@ -6001,24 +6004,6 @@ MonoBehaviour:
   quest: {fileID: 11400000, guid: a5678901234a4bcd8ef0123456789abc, type: 2}
   questTitle: {fileID: 1539371603}
   questObjective: {fileID: 1768127745}
---- !u!114 &2100000002
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 581841281}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2345678901a4bcd8ef0123456789abe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  availableResearches:
-  - {fileID: 11400000, guid: a2345678901a4bcd8ef0123456789abe, type: 2}
-  - {fileID: 11400000, guid: a3345678901a4bcd8ef0123456789abe, type: 2}
-  - {fileID: 11400000, guid: a4345678901a4bcd8ef0123456789abe, type: 2}
-  researchTitleText: {fileID: 0}
-  researchProgressText: {fileID: 0}
 --- !u!114 &2108112240 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2736964439257049151, guid: d06ae6e04fb4b7342829e9373fd83ad0, type: 3}

@@ -101,7 +101,7 @@ namespace Code.Units
             _nextAttackTime = Time.time;
             _lastDestination = new Vector3(float.PositiveInfinity, 0f, 0f);
 
-            if (_unit != null)
+            if (_unit != null && _unit.GraphAgent != null)
                 _unit.SetBTVariable(BTVariables.Command, UnitCommands.Attack);
 
             return true;
@@ -146,13 +146,13 @@ namespace Code.Units
             _isAttacking = false;
             if (_unit == null || _unit.Agent == null || !_unit.Agent.enabled || !_unit.Agent.isOnNavMesh)
             {
-                _unit?.SetBTVariable(BTVariables.Command, UnitCommands.Stop);
+                if (_unit?.GraphAgent != null) _unit.SetBTVariable(BTVariables.Command, UnitCommands.Stop);
                 return;
             }
 
             _unit.Agent.isStopped = false;
             _unit.Agent.ResetPath();
-            _unit.SetBTVariable(BTVariables.Command, UnitCommands.Stop);
+            if (_unit.GraphAgent != null) _unit.SetBTVariable(BTVariables.Command, UnitCommands.Stop);
         }
     }
 }

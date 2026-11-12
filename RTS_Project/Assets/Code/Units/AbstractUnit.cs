@@ -60,7 +60,7 @@ namespace Code.Units
             SetBTVariable(BTVariables.Command, UnitCommands.Move);
         }
 
-        public void Stop()
+        public virtual void Stop()
         {
             SetBTVariable(BTVariables.TargetLocation, transform.position);
             SetBTVariable(BTVariables.Command, UnitCommands.Stop);
