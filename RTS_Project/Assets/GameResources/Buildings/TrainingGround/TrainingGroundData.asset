@@ -10,18 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71ed1cd3106a004458fd2ff858b6c9f0, type: 3}
-  m_Name: TrainingGround Data
-  m_EditorClassIdentifier:
-  <Health>k__BackingField: 250
-  <Prefab>k__BackingField: {fileID: 1000001, guid: 90010000000000000000000000000005, type: 3}
+  m_Name: TrainingGroundData
+  m_EditorClassIdentifier: 
+  <Prefab>k__BackingField: {fileID: 8338712407600053274, guid: 0cded84e84398db48ae9cd2e973bded0, type: 3}
   <BuildTime>k__BackingField: 12
-  <Icon>k__BackingField: {fileID: 0}
+  <Icon>k__BackingField: {fileID: 21300000, guid: 8cd9ba8c2545f4570b8b9b186324532b, type: 3}
   <Cost>k__BackingField: {fileID: 11400000, guid: 609f1ba91954a8d428a9efe29bc6a8ac, type: 2}
-  <ConstructionDummy>k__BackingField: {fileID: 900201, guid: 90010000000000000000000000000006, type: 3}
+  <ConstructionDummy>k__BackingField: {fileID: 403029833566242306, guid: 90010000000000000000000000000006, type: 3}
   <PopulationBonus>k__BackingField: 0
   <WorkerCapacity>k__BackingField: 3
   <StorageCapacity>k__BackingField: 0
   <WorkerProductionSupply>k__BackingField: {fileID: 0}
   <WorkerProductionInterval>k__BackingField: 10
   <WorkerProductionAmount>k__BackingField: 8
-  <ConsumeAssignedWorkerPerUnit>k__BackingField: 1
+  <LimitUnitQueueByAssignedWorkers>k__BackingField: 1

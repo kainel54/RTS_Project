@@ -11,13 +11,13 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00b94ebb33711d843b4995b8da6adc9d, type: 3}
   m_Name: Build TrainingGround command
-  m_EditorClassIdentifier:
+  m_EditorClassIdentifier: 
   <CommandName>k__BackingField: TrainingGround
-  <CommandIcon>k__BackingField: {fileID: 0}
+  <CommandIcon>k__BackingField: {fileID: 21300000, guid: 8cd9ba8c2545f4570b8b9b186324532b, type: 3}
   <IsSingleUnitCommand>k__BackingField: 1
   <SlotIndex>k__BackingField: 5
   <RequireClickToActivate>k__BackingField: 1
   <BuildingData>k__BackingField: {fileID: 11400000, guid: 90010000000000000000000000000003, type: 2}
-  <GhostPrefab>k__BackingField: {fileID: 800201, guid: 90010000000000000000000000000008, type: 3}
+  <GhostPrefab>k__BackingField: {fileID: 4397520087810794604, guid: 257ba8f83eadfbe4680f9639a591dc7a, type: 3}
   <Restrictions>k__BackingField:
   - {fileID: 11400000, guid: 16e83967a7b83444db46807e0e6a6baf, type: 2}

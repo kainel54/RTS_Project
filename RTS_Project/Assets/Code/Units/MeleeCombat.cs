@@ -20,6 +20,8 @@ namespace Code.Units
         [SerializeField, Min(0.1f)] private float attackInterval = 1f;
         [SerializeField] private ParamSO attackAnimation;
         [SerializeField] private ParamSO speedAnimationParameter;
+        [SerializeField] private GameObject projectilePrefab;
+        [SerializeField, Min(0.1f)] private float projectileSpeed = 16f;
 
         private AbstractUnit _unit;
         private MeleeCombat _target;
@@ -83,7 +85,24 @@ namespace Code.Units
             _nextAttackTime = Time.time + attackInterval;
             if (attackAnimation != null)
                 _unit.UnitAnimator?.SetParam(attackAnimation);
-            _target.TakeDamage(damage);
+
+            if (projectilePrefab != null)
+            {
+                Vector3 spawnPosition = transform.position + Vector3.up;
+                Quaternion rotation = Quaternion.LookRotation(direction.normalized);
+                GameObject projectileObject = Instantiate(projectilePrefab, spawnPosition, rotation);
+                if (projectileObject.TryGetComponent(out ArrowProjectile projectile))
+                    projectile.Launch(_target, damage, projectileSpeed);
+                else
+                {
+                    Destroy(projectileObject);
+                    _target.TakeDamage(damage);
+                }
+            }
+            else
+            {
+                _target.TakeDamage(damage);
+            }
         }
 
         public bool CanAttack(MeleeCombat target)

@@ -18453,9 +18453,9 @@ MonoBehaviour:
   <AbstractUnitData>k__BackingField: {fileID: 11400000, guid: 90010000000000000000000000000001, type: 2}
   <AvailableCommands>k__BackingField:
   - {fileID: 11400000, guid: 4bb7c15542764b88bcb2f6a95e9d02cb, type: 2}
-  - {fileID: 11400000, guid: 80c6fbdb903f48b2b73d2001c7fd79d8, type: 2}
+  - {fileID: 11400000, guid: 79f24004e4f66b940bd648e82c4cea74, type: 2}
   - {fileID: 11400000, guid: 4f893714785b2a34f93d9c376da4f201, type: 2}
-  speedAnimationParameter: {fileID: 11400000, guid: 3a78e31170fc59347abbbe55a5f61fb5, type: 2}
+  speedAnimationParameter: {fileID: 11400000, guid: 277ef6f446e58774a94b5abc9e7e6a5e, type: 2}
 --- !u!114 &70000004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18486,7 +18486,7 @@ MonoBehaviour:
   attackRange: 1.5
   attackInterval: 1
   attackAnimation: {fileID: 11400000, guid: 4af2d2c1a46effa44b35338f8e19c55c, type: 2}
-  speedAnimationParameter: {fileID: 11400000, guid: 3a78e31170fc59347abbbe55a5f61fb5, type: 2}
+  speedAnimationParameter: {fileID: 11400000, guid: 277ef6f446e58774a94b5abc9e7e6a5e, type: 2}
 --- !u!1 &70000006
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 85e615c2f36645af902edbad6b26d6f0, type: 3}
-  m_Name: Train Swordman command
-  m_EditorClassIdentifier:
-  <CommandName>k__BackingField: Train Swordman
-  <CommandIcon>k__BackingField: {fileID: 0}
+  m_Name: Train Archer command
+  m_EditorClassIdentifier: 
+  <CommandName>k__BackingField: Train Archer
+  <CommandIcon>k__BackingField: {fileID: 21300000, guid: 4f1846f5e9ef246f59a339bc877947f1, type: 3}
   <IsSingleUnitCommand>k__BackingField: 1
-  <SlotIndex>k__BackingField: 0
-  <RequireClickToActivate>k__BackingField: 1
-  <Unit>k__BackingField: {fileID: 11400000, guid: 90010000000000000000000000000001, type: 2}
+  <SlotIndex>k__BackingField: 1
+  <RequireClickToActivate>k__BackingField: 0
+  <Unit>k__BackingField: {fileID: 11400000, guid: 9001000000000000000000000000000a, type: 2}
