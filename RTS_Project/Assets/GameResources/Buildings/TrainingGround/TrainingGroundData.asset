@@ -24,3 +24,4 @@ MonoBehaviour:
   <WorkerProductionInterval>k__BackingField: 10
   <WorkerProductionAmount>k__BackingField: 8
   <LimitUnitQueueByAssignedWorkers>k__BackingField: 1
+  <ConsumeAssignedWorkerPerUnit>k__BackingField: 1

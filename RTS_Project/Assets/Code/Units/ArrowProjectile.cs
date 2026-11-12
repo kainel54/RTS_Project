@@ -5,6 +5,7 @@ namespace Code.Units
     /// <summary>Homes an arrow toward a combat target and applies its damage on impact.</summary>
     public sealed class ArrowProjectile : MonoBehaviour
     {
+        [SerializeField] private Vector3 modelForwardEulerOffset = new Vector3(90f, 0f, 0f);
         private MeleeCombat _target;
         private float _damage;
         private float _speed;
@@ -15,6 +16,9 @@ namespace Code.Units
             _target = target;
             _damage = damage;
             _speed = speed;
+
+            if (_target != null)
+                FaceTarget(GetTargetPosition() - transform.position);
         }
 
         private void Update()
@@ -26,11 +30,7 @@ namespace Code.Units
                 return;
             }
 
-            Collider targetCollider = _target.GetComponent<Collider>();
-            Vector3 targetPosition = targetCollider != null
-                ? targetCollider.bounds.center
-                : _target.transform.position + Vector3.up;
-            Vector3 toTarget = targetPosition - transform.position;
+            Vector3 toTarget = GetTargetPosition() - transform.position;
             float step = _speed * Time.deltaTime;
 
             if (toTarget.sqrMagnitude <= step * step)
@@ -41,8 +41,23 @@ namespace Code.Units
             }
 
             Vector3 direction = toTarget.normalized;
+            FaceTarget(direction);
             transform.position += direction * step;
-            transform.rotation = Quaternion.LookRotation(direction);
+        }
+
+        private Vector3 GetTargetPosition()
+        {
+            Collider targetCollider = _target.GetComponent<Collider>();
+            return targetCollider != null
+                ? targetCollider.bounds.center
+                : _target.transform.position + Vector3.up;
+        }
+
+        private void FaceTarget(Vector3 direction)
+        {
+            if (direction.sqrMagnitude > 0.0001f)
+                transform.rotation = Quaternion.LookRotation(direction.normalized, Vector3.up)
+                    * Quaternion.Euler(modelForwardEulerOffset);
         }
     }
 }

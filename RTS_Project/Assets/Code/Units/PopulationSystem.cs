@@ -60,7 +60,7 @@ namespace Code.Units
 
                     foreach (UnitSO unit in building.UnitQueue)
                     {
-                        if (unit != null)
+                        if (unit != null && !building.ConsumesAssignedWorkerFor(unit))
                             queued += Mathf.Max(0, unit.PopulationCost);
                     }
                 }
@@ -121,6 +121,8 @@ namespace Code.Units
         public bool CanQueue(UnitSO unit, BaseBuilding building)
         {
             if (unit == null || building == null) return false;
+            if (building.ConsumesAssignedWorkerFor(unit))
+                return building.CanQueueUnit(unit);
             return building.CanQueueUnit(unit) && CanQueue(unit);
         }
 

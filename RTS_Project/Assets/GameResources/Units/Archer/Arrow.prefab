@@ -80,3 +80,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a1b31763ac64cf8880660e3ed7b2d91, type: 3}
   m_Name:
   m_EditorClassIdentifier:
+  modelForwardEulerOffset: {x: 90, y: 0, z: 0}

@@ -14,5 +14,6 @@ namespace Code.Units
         [field: SerializeField, Min(0.1f)] public float WorkerProductionInterval { get; private set; } = 10f;
         [field: SerializeField, Min(1)] public int WorkerProductionAmount { get; private set; } = 8;
         [field: SerializeField] public bool LimitUnitQueueByAssignedWorkers { get; private set; }
+        [field: SerializeField] public bool ConsumeAssignedWorkerPerUnit { get; private set; }
     }
 }

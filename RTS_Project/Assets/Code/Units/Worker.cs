@@ -4,7 +4,6 @@ using Code.Environments;
 using Code.GameEvents;
 using Code.Units.BT;
 using Code.Units.BT.Events;
-using Code.Units.Animations;
 using Unity.Behavior;
 using UnityEngine;
 
@@ -14,15 +13,12 @@ namespace Code.Units
     {
         [SerializeField] private GameObject backPackObject;
         [SerializeField] private BaseCommandSO[] cancelConstructionCommandSet;
-        [SerializeField] private ParamSO assignedAnimationParameter;
-        [SerializeField, Min(0.1f)] private float assignedAnimationPeriod = 1f;
         public bool HasSupplies => backPackObject.activeSelf;
         public int CurrentSupplyAmount => TryGetBTVariable<int>(BTVariables.SupplyAmountHeld,
             out BlackboardVariable<int> amountVariable) ? amountVariable.Value : 0;
         public BaseBuilding AssignedBuilding { get; private set; }
         private StorageBuilding _reservedStorage;
         private int _reservedStorageAmount;
-        private float _assignedAnimationTimer;
         public bool IsBuilding=>TryGetBTVariable(BTVariables.Command,out BlackboardVariable<UnitCommands> commandValue)&&
             commandValue.Value==UnitCommands.ConstructBuilding;
 
@@ -34,29 +30,32 @@ namespace Code.Units
 
         private void Update()
         {
-            if (AssignedBuilding == null || Agent == null || UnitAnimator == null
-                || assignedAnimationParameter == null || Agent.pathPending)
+            if (AssignedBuilding == null || Agent == null || Agent.pathPending)
                 return;
 
-            if (Agent.hasPath && Agent.remainingDistance > Agent.stoppingDistance)
-                return;
-            if (!Agent.hasPath && Vector3.Distance(transform.position, AssignedBuilding.transform.position) > 2f)
+            bool hasArrived = Agent.isOnNavMesh
+                ? Agent.hasPath
+                    ? Agent.remainingDistance <= Mathf.Max(Agent.stoppingDistance, 0.2f)
+                    : Vector3.Distance(transform.position, AssignedBuilding.transform.position) <= 2f
+                : Vector3.Distance(transform.position, AssignedBuilding.transform.position) <= 2f;
+
+            if (!hasArrived)
                 return;
 
-            _assignedAnimationTimer += Time.deltaTime;
-            if (_assignedAnimationTimer < assignedAnimationPeriod) return;
+            if (Agent.isOnNavMesh)
+            {
+                Agent.isStopped = true;
+                Agent.ResetPath();
+            }
 
-            _assignedAnimationTimer = 0f;
-            UnitAnimator.SetParam(assignedAnimationParameter);
+            gameObject.SetActive(false);
         }
 
         public bool AssignToBuilding(BaseBuilding building)
         {
-            if (building == null || !building.TryAssignWorker(this)) return false;
-
+            if (building == null) return false;
             ReleaseStorageReservation();
-            MoveTo(building.transform.position);
-            return true;
+            return building.TryAssignWorker(this);
         }
 
         public void UnassignFromBuilding()
@@ -65,10 +64,17 @@ namespace Code.Units
                 AssignedBuilding.RemoveWorker(this);
         }
 
-        internal void SetAssignedBuilding(BaseBuilding building)
+        internal void SetAssignedBuilding(BaseBuilding building, bool reactivateWhenUnassigned = true)
         {
             AssignedBuilding = building;
-            _assignedAnimationTimer = assignedAnimationPeriod;
+            if (building == null)
+            {
+                gameObject.SetActive(reactivateWhenUnassigned);
+                return;
+            }
+
+            gameObject.SetActive(true);
+            MoveTo(building.transform.position);
         }
 
         protected override void OnDestroy()

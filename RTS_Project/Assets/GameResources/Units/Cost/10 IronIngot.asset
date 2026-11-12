@@ -16,7 +16,9 @@ MonoBehaviour:
   <WoodSO>k__BackingField: {fileID: 0}
   <Stone>k__BackingField: 0
   <StoneSO>k__BackingField: {fileID: 0}
-  <IronOre>k__BackingField: 10
-  <IronOreSO>k__BackingField: {fileID: 11400000, guid: a1b2c3d4e5f6478899aabbccddeeff01, type: 2}
-  <IronIngot>k__BackingField: 0
-  <IronIngotSO>k__BackingField: {fileID: 0}
+  <IronOre>k__BackingField: 0
+  <IronOreSO>k__BackingField: {fileID: 0}
+  <IronIngot>k__BackingField: 10
+  <IronIngotSO>k__BackingField: {fileID: 11400000, guid: a1b2c3d4e5f6478899aabbccddeeff02, type: 2}
+  <Food>k__BackingField: 0
+  <FoodSO>k__BackingField: {fileID: 0}
