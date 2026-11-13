@@ -30,6 +30,10 @@ namespace Code.Units
         private bool _isAttacking;
 
         public Team Faction => team;
+        public MeleeCombat CurrentTarget => _target;
+        public float Damage => damage;
+        public float AttackRange => attackRange;
+        public float AttackInterval => attackInterval;
         public float CurrentHealth { get; private set; }
         public float MaxHealth => maxHealth;
         public bool IsDead { get; private set; }

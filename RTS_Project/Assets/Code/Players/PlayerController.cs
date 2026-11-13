@@ -75,7 +75,12 @@ namespace Code.Players
 
         #region Event Handler logic
 
-        private void HandleUnitSpawn(UnitSpawnEvent evt) => _aliveUnits.Add(evt.Unit);
+        private void HandleUnitSpawn(UnitSpawnEvent evt)
+        {
+            MeleeCombat combat = evt.Unit != null ? evt.Unit.GetComponent<MeleeCombat>() : null;
+            if (combat != null && combat.Faction == MeleeCombat.Team.Enemy) return;
+            _aliveUnits.Add(evt.Unit);
+        }
         private void HandleUnitDeSpawn(UnitDeSpawnEvent evt)
         {
             _aliveUnits.Remove(evt.Unit);
@@ -259,6 +264,7 @@ namespace Code.Players
             if (_activeCommand == null
                 && inputReader.GetMousePosition(out hit, selectableUnitLayer)
                 && hit.collider.TryGetComponent(out ISelectable selectable)
+                && IsPlayerSelectable(selectable)
                 && _addedUnits.Count == 0)
             {
                 selectable.Select();
@@ -267,6 +273,12 @@ namespace Code.Players
             {
                 ActivateCommand(hit);
             }
+        }
+
+        private static bool IsPlayerSelectable(ISelectable selectable)
+        {
+            return selectable is not AbstractCommandable commandable
+                || commandable.GetComponent<MeleeCombat>()?.Faction != MeleeCombat.Team.Enemy;
         }
 
         private void HandleMouseRightButton(bool isPressed)

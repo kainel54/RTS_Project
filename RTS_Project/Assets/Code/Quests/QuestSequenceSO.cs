@@ -10,7 +10,8 @@ namespace Code.Quests
     {
         CollectSupply,
         CompleteBuilding,
-        AssignWorkerToBuilding
+        AssignWorkerToBuilding,
+        ProduceUnit
     }
 
     [Serializable]
@@ -21,6 +22,7 @@ namespace Code.Quests
         [field: SerializeField, Min(1)] public int TargetCount { get; private set; } = 1;
         [field: SerializeField] public SupplySO Supply { get; private set; }
         [field: SerializeField] public BuildingSO Building { get; private set; }
+        [field: SerializeField] public UnitSO Unit { get; private set; }
         [field: SerializeField] public SupplySO RewardSupply { get; private set; }
         [field: SerializeField, Min(0)] public int RewardAmount { get; private set; }
     }

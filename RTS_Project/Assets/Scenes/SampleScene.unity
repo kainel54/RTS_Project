@@ -4767,6 +4767,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1730631087}
   - component: {fileID: 1847691273}
+  - component: {fileID: 1960783452}
   m_Layer: 0
   m_Name: CenterBase
   m_TagString: Untagged
@@ -5198,6 +5199,30 @@ MonoBehaviour:
   buildingClearanceRadius: 5
   attemptsPerResource: 50
   regenerationInterval: 60
+--- !u!114 &1960783452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730631086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1de7d317369b4d999b2dfd0022001f67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resourceSpawner: {fileID: 1847691273}
+  questManager: {fileID: 2100000001}
+  enemyPrefab: {fileID: 155132, guid: 8c5cc5981ddf4a79ad025a621d3e9001, type: 3}
+  initialEnemyCount: 1
+  maxAliveEnemies: 5
+  waveInterval: 35
+  enemiesPerWave: 1
+  innerResourceBuffer: 8
+  outerResourceBuffer: 25
+  navMeshSampleDistance: 4
+  spawnClearanceRadius: 2
+  attemptsPerEnemy: 40
 --- !u!1001 &1900000001
 PrefabInstance:
   m_ObjectHideFlags: 0

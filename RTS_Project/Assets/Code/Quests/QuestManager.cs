@@ -2,6 +2,7 @@ using Code.CoreSystem;
 using Code.Environments;
 using Code.GameEvents;
 using System.Collections;
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -18,11 +19,16 @@ namespace Code.Quests
         private bool _grantingReward;
         private Coroutine _completionMessageRoutine;
 
+        public bool IsCompleted => quest != null && quest.Objectives != null
+            && _objectiveIndex >= quest.Objectives.Count;
+        public event Action QuestSequenceCompleted;
+
         private void Awake()
         {
             Bus<SupplyAcceptedEvent>.OnEvent += HandleSupply;
             Bus<BuildingCompletedEvent>.OnEvent += HandleBuildingCompleted;
             Bus<WorkerAssignedEvent>.OnEvent += HandleWorkerAssigned;
+            Bus<UnitProducedEvent>.OnEvent += HandleUnitProduced;
         }
 
         private void Start()
@@ -40,6 +46,7 @@ namespace Code.Quests
             Bus<SupplyAcceptedEvent>.OnEvent -= HandleSupply;
             Bus<BuildingCompletedEvent>.OnEvent -= HandleBuildingCompleted;
             Bus<WorkerAssignedEvent>.OnEvent -= HandleWorkerAssigned;
+            Bus<UnitProducedEvent>.OnEvent -= HandleUnitProduced;
         }
 
         private void HandleSupply(SupplyAcceptedEvent evt)
@@ -71,6 +78,15 @@ namespace Code.Quests
             AddProgress(1);
         }
 
+        private void HandleUnitProduced(UnitProducedEvent evt)
+        {
+            QuestObjectiveDefinition objective = CurrentObjective;
+            if (objective == null || objective.Type != QuestObjectiveType.ProduceUnit
+                || (objective.Unit != null && objective.Unit != evt.Unit)) return;
+
+            AddProgress(1);
+        }
+
         private QuestObjectiveDefinition CurrentObjective
         {
             get
@@ -93,11 +109,14 @@ namespace Code.Quests
                 int rewardAmount = objective.RewardAmount;
                 _objectiveIndex++;
                 _objectiveProgress = 0;
+                bool sequenceCompleted = IsCompleted;
 
                 if (rewardSupply != null && rewardAmount > 0)
                     GrantReward(rewardSupply, rewardAmount);
 
                 ShowCompletionMessage(rewardSupply, rewardAmount);
+                if (sequenceCompleted)
+                    QuestSequenceCompleted?.Invoke();
                 return;
             }
 

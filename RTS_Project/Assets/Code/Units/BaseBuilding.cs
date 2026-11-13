@@ -10,6 +10,8 @@ namespace Code.Units
     public class BaseBuilding : AbstractCommandable
     {
         public const int MAX_QUEUE_SIZE = 5;
+        [SerializeField, Min(1f)] private float maxHealth = 500f;
+        public float CurrentHealth { get; private set; }
         private List<UnitSO> _buildingQueue = new List<UnitSO>(MAX_QUEUE_SIZE);
         private List<SupplySO> _supplyQueue = new List<SupplySO>(MAX_QUEUE_SIZE);
         private readonly List<Worker> _assignedWorkers = new List<Worker>();
@@ -38,10 +40,25 @@ namespace Code.Units
         public event SupplyQueueUpdatedEvent OnSupplyQueueUpdated;
         public event System.Action<Worker[]> AssignedWorkersUpdated;
 
+        protected override void Awake()
+        {
+            base.Awake();
+            CurrentHealth = maxHealth;
+        }
+
         protected override void Start()
         {
             base.Start();
             PopulationSystem.Instance?.RegisterBuilding(this);
+        }
+
+        public void TakeDamage(float amount)
+        {
+            if (amount <= 0f || CurrentHealth <= 0f) return;
+
+            CurrentHealth = Mathf.Max(0f, CurrentHealth - amount);
+            if (CurrentHealth <= 0f)
+                Destroy(gameObject);
         }
 
         protected override void OnDestroy()
@@ -208,12 +225,14 @@ namespace Code.Units
                 Vector3 spawnPosition = transform.position + transform.forward * 3f;
                 if (UnityEngine.AI.NavMesh.SamplePosition(spawnPosition, out var hit, 3f, UnityEngine.AI.NavMesh.AllAreas))
                     spawnPosition = hit.position;
-                Instantiate(UnitSOBeingBuilt.Prefab, spawnPosition, Quaternion.identity);
+                UnitSO producedUnit = UnitSOBeingBuilt;
+                Instantiate(producedUnit.Prefab, spawnPosition, Quaternion.identity);
                 if (consumedWorker != null)
                 {
                     RemoveWorker(consumedWorker, false);
                     Destroy(consumedWorker.gameObject);
                 }
+                Bus<UnitProducedEvent>.Raise(new UnitProducedEvent(producedUnit));
                 _buildingQueue.RemoveAt(0);
             }
             

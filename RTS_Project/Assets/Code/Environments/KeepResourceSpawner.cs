@@ -24,19 +24,25 @@ namespace Code.Environments
         [SerializeField, Min(1)] private int attemptsPerResource = 50;
         [SerializeField, Min(1f)] private float regenerationInterval = 60f;
 
+        public Vector3 SpawnOrigin => _spawnOrigin;
+        public float MaxSpawnRadius => maxSpawnRadius;
+
         private static readonly Collider[] OverlapResults = new Collider[16];
         private int[] _targetCounts;
         private Vector3 _spawnOrigin;
         private int _buildingMask;
         private int _resourceMask;
 
-        private void Start()
+        private void Awake()
         {
             GameObject startingKeep = GameObject.Find("Keep");
             _spawnOrigin = startingKeep != null ? startingKeep.transform.position : transform.position;
             _buildingMask = LayerMask.GetMask("Building");
             _resourceMask = LayerMask.GetMask("Supplies");
+        }
 
+        private void Start()
+        {
             if (resources == null) return;
 
             _targetCounts = new int[resources.Length];

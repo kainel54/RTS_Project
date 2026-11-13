@@ -26,7 +26,9 @@ namespace Code.Units
                 int population = 0;
                 foreach (AbstractUnit unit in _livingUnits)
                 {
-                    if (unit != null && unit.AbstractUnitData is UnitSO unitData)
+                    MeleeCombat combat = unit != null ? unit.GetComponent<MeleeCombat>() : null;
+                    if (unit != null && (combat == null || combat.Faction == MeleeCombat.Team.Player)
+                        && unit.AbstractUnitData is UnitSO unitData)
                         population += Mathf.Max(0, unitData.PopulationCost);
                 }
 
