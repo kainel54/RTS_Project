@@ -4387,6 +4387,7 @@ MonoBehaviour:
   ironOreSO: {fileID: 11400000, guid: a1b2c3d4e5f6478899aabbccddeeff01, type: 2}
   ironIngotSO: {fileID: 11400000, guid: a1b2c3d4e5f6478899aabbccddeeff02, type: 2}
   foodSO: {fileID: 11400000, guid: d1cd44e192c746b69fb86b213086b1d4, type: 2}
+  startingFoodAmount: 100
   <WoodAmount>k__BackingField: 1000
   <StoneAmount>k__BackingField: 1000
   <IronOreAmount>k__BackingField: 0
@@ -5869,6 +5870,9 @@ MonoBehaviour:
   startingPopulationCap: 5
   foodConsumptionInterval: 10
   foodPerPopulationPerInterval: 1
+  starvationGracePeriod: 30
+  starvationDamageInterval: 5
+  starvationDamage: 1
   <PopulationIcon>k__BackingField: {fileID: 21300000, guid: 1979090206e6470288df89650e29817b, type: 3}
 --- !u!1 &2047146387
 GameObject:

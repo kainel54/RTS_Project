@@ -14,10 +14,16 @@ namespace Code.Units
         [SerializeField, Min(0)] private int startingPopulationCap = 5;
         [SerializeField, Min(0.1f)] private float foodConsumptionInterval = 10f;
         [SerializeField, Min(0)] private int foodPerPopulationPerInterval = 1;
+        [SerializeField, Min(0.1f)] private float starvationGracePeriod = 30f;
+        [SerializeField, Min(0.1f)] private float starvationDamageInterval = 5f;
+        [SerializeField, Min(0.1f)] private float starvationDamage = 1f;
         [field: SerializeField] public Sprite PopulationIcon { get; private set; }
 
         private readonly HashSet<AbstractUnit> _livingUnits = new HashSet<AbstractUnit>();
         private readonly HashSet<BaseBuilding> _buildings = new HashSet<BaseBuilding>();
+        private bool _isStarving;
+        private float _starvingDuration;
+        private float _nextStarvationDamageAt;
 
         public int CurrentPopulation
         {
@@ -100,6 +106,25 @@ namespace Code.Units
             StartCoroutine(ConsumeFoodOverTime());
         }
 
+        private void Update()
+        {
+            if (!_isStarving) return;
+
+            if (CurrentPopulation <= 0 || (UserSupplies.Instance != null && UserSupplies.Instance.FoodAmount > 0))
+            {
+                _isStarving = false;
+                _starvingDuration = 0f;
+                return;
+            }
+
+            _starvingDuration += Time.deltaTime;
+            while (_starvingDuration >= _nextStarvationDamageAt)
+            {
+                DamagePlayerUnitsFromStarvation();
+                _nextStarvationDamageAt += starvationDamageInterval;
+            }
+        }
+
         private System.Collections.IEnumerator ConsumeFoodOverTime()
         {
             while (true)
@@ -107,8 +132,45 @@ namespace Code.Units
                 yield return new WaitForSeconds(foodConsumptionInterval);
 
                 int foodCost = CurrentPopulation * foodPerPopulationPerInterval;
-                if (foodCost > 0 && UserSupplies.Instance != null)
-                    UserSupplies.Instance.ConsumeFood(foodCost);
+                if (foodCost <= 0)
+                {
+                    _isStarving = false;
+                    _starvingDuration = 0f;
+                    continue;
+                }
+
+                UserSupplies supplies = UserSupplies.Instance;
+                if (supplies == null) continue;
+
+                supplies.ConsumeFood(foodCost);
+                if (supplies.FoodAmount <= 0)
+                    BeginStarvation();
+                else
+                {
+                    _isStarving = false;
+                    _starvingDuration = 0f;
+                }
+            }
+        }
+
+        private void BeginStarvation()
+        {
+            if (_isStarving) return;
+
+            _isStarving = true;
+            _starvingDuration = 0f;
+            _nextStarvationDamageAt = starvationGracePeriod;
+        }
+
+        private void DamagePlayerUnitsFromStarvation()
+        {
+            foreach (AbstractUnit unit in _livingUnits)
+            {
+                if (unit == null) continue;
+
+                MeleeCombat combat = unit.GetComponent<MeleeCombat>();
+                if (combat != null && combat.Faction == MeleeCombat.Team.Player && !combat.IsDead)
+                    combat.TakeDamage(starvationDamage);
             }
         }
 

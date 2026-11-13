@@ -18,6 +18,7 @@ namespace Code.Players
         [SerializeField] private SupplySO ironOreSO;
         [SerializeField] private SupplySO ironIngotSO;
         [SerializeField] private SupplySO foodSO;
+        [SerializeField, Min(0)] private int startingFoodAmount = 100;
 
         [field: SerializeField] public int WoodAmount { get; private set; }
         [field: SerializeField] public int StoneAmount { get; private set; }
@@ -75,6 +76,7 @@ namespace Code.Players
 
         private void Start()
         {
+            FoodAmount = StoreAcrossAvailableStorage(startingFoodAmount);
             Bus<UserSupplyReadyEvent>.Raise(new UserSupplyReadyEvent(this));
         }
 
