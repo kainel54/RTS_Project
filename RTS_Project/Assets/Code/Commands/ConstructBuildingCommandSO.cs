@@ -14,6 +14,7 @@ namespace Code.Commands
         [field : SerializeField] public BuildingSO BuildingData { get; private set; }
         [field : SerializeField] public GameObject GhostPrefab { get; private set; }
         [field: SerializeField] public ConstructionRestrictionSO[] Restrictions { get; private set; }
+        public override SupplyCostSO GetSupplyCost() => BuildingData != null ? BuildingData.Cost : null;
 
         public override bool CanHandle(CommandContext context)
         {

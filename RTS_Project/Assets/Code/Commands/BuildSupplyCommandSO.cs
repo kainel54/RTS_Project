@@ -10,6 +10,7 @@ namespace Code.Commands
     {
         [field: SerializeField] public SupplyCostSO Cost { get; private set; }
         [field: SerializeField] public SupplySO Supply { get; private set; }
+        public override SupplyCostSO GetSupplyCost() => Cost;
 
         public override bool CanHandle(CommandContext context)
         {

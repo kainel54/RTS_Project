@@ -8,6 +8,7 @@ namespace Code.Commands
     public class BuildUnitCommandSO : BaseCommandSO
     {
         [field: SerializeField] public UnitSO Unit { get; private set; }
+        public override SupplyCostSO GetSupplyCost() => Unit != null ? Unit.Cost : null;
 
         public override bool CanHandle(CommandContext context)
         {

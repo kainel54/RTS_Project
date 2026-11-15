@@ -1,4 +1,5 @@
 using UnityEngine;
+using Code.Units;
 
 namespace Code.Commands
 {
@@ -10,6 +11,8 @@ namespace Code.Commands
         [field: Range(-1, 8)] 
         [field: SerializeField] public int SlotIndex { get; private set; } = 0;
         [field: SerializeField] public bool RequireClickToActivate { get; private set; } = true;        
+
+        public virtual SupplyCostSO GetSupplyCost() => null;
 
         public abstract bool CanHandle(CommandContext context);
         public abstract void Handle(CommandContext context);

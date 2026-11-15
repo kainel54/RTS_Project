@@ -12,6 +12,7 @@ namespace Code.Commands
     {
         [field: SerializeField] public SupplyCostSO IronOre { get; private set; }
         [SerializeField] private SupplySO ingotSupplyType;
+        public override SupplyCostSO GetSupplyCost() => IronOre;
 
         public override bool CanHandle(CommandContext context)
         {
