@@ -80,7 +80,8 @@ namespace Code.Units
         protected override void OnDestroy()
         {
             ReleaseStorageReservation();
-            UnassignFromBuilding();
+            if (AssignedBuilding != null)
+                AssignedBuilding.RemoveWorker(this, false);
             base.OnDestroy();
         }
 

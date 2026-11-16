@@ -15,5 +15,5 @@ MonoBehaviour:
   <Prefab>k__BackingField: {fileID: 179124, guid: 90010000000000000000000000000009, type: 3}
   <BuildTime>k__BackingField: 9
   <Icon>k__BackingField: {fileID: 0}
-  <Cost>k__BackingField: {fileID: 11400000, guid: 72bf887886e60344f812367ac1bf8b17, type: 2}
+  <Cost>k__BackingField: {fileID: 11400000, guid: 7e60af513dc94f0fb7e42a889f406b55, type: 2}
   <PopulationCost>k__BackingField: 1

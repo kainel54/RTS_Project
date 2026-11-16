@@ -41,6 +41,8 @@ namespace Code.Players
         private HashSet<AbstractUnit> _addedUnits = new HashSet<AbstractUnit>(24);
 
         private ButtonState _leftButtonState = ButtonState.None;
+        private bool _leftButtonHeld;
+        private bool _leftButtonPressedSinceUpdate;
         private Vector2 _startMousePosition;
         private BaseCommandSO _activeCommand; //현재 클릭된 커맨드를 저장하는 변수.
         private bool _wasMouseOverOnUI = false; //UI위에 현재 마우스가 있는가?
@@ -49,9 +51,6 @@ namespace Code.Players
 
         private void Awake()
         {
-            // inputReader.OnMouseLeftButton += HandleMouseLeftButton;
-            inputReader.OnMouseRightButton += HandleMouseRightButton;
-
             Bus<UnitSelectEvent>.OnEvent += HandleUnitSelected;
             Bus<UnitDeSelectEvent>.OnEvent += HandleUnitDeSelected;
             Bus<UnitSpawnEvent>.OnEvent += HandleUnitSpawn;
@@ -62,9 +61,6 @@ namespace Code.Players
         private void OnDestroy()
         {
             ClearGhostInstance();
-
-            // inputReader.OnMouseLeftButton -= HandleMouseLeftButton;
-            inputReader.OnMouseRightButton -= HandleMouseRightButton;
 
             Bus<UnitSelectEvent>.OnEvent -= HandleUnitSelected;
             Bus<UnitDeSelectEvent>.OnEvent -= HandleUnitDeSelected;
@@ -163,22 +159,48 @@ namespace Code.Players
 
         private void Update()
         {
-            UpdateLeftButtonState();
+            PollMouseButtons();
             HandlePanning();
             HandleDragSelect();
             HandleGhostInstance();
+
+            _leftButtonPressedSinceUpdate = false;
+            if (_leftButtonState == ButtonState.Pressed)
+                _leftButtonState = _leftButtonHeld ? ButtonState.Hold : ButtonState.None;
+            else if (_leftButtonState == ButtonState.Released)
+                _leftButtonState = ButtonState.None;
         }
 
-        private void UpdateLeftButtonState()
+        private void PollMouseButtons()
         {
-            if (Mouse.current.leftButton.wasPressedThisFrame)
-                _leftButtonState = ButtonState.Pressed;
-            else if (Mouse.current.leftButton.isPressed && !Mouse.current.leftButton.wasPressedThisFrame)
-                _leftButtonState = ButtonState.Hold;
-            else if (Mouse.current.leftButton.wasReleasedThisFrame)
-                _leftButtonState = ButtonState.Released;
+            Mouse mouse = Mouse.current;
+            if (mouse == null) return;
+
+            if (mouse.leftButton.wasPressedThisFrame)
+                HandleMouseLeftButton(true);
+            if (mouse.leftButton.wasReleasedThisFrame)
+                HandleMouseLeftButton(false);
+            if (mouse.rightButton.wasReleasedThisFrame)
+                HandleMouseRightButton(false);
+        }
+
+        private void HandleMouseLeftButton(bool isPressed)
+        {
+            if (isPressed)
+            {
+                if (!_leftButtonHeld)
+                {
+                    _leftButtonState = ButtonState.Pressed;
+                    _leftButtonPressedSinceUpdate = true;
+                }
+
+                _leftButtonHeld = true;
+            }
             else
-                _leftButtonState = ButtonState.None;
+            {
+                _leftButtonHeld = false;
+                _leftButtonState = ButtonState.Released;
+            }
         }
 
         #region Drag Logic
@@ -195,6 +217,10 @@ namespace Code.Players
                     HandleMouseDrag();
                     break;
                 case ButtonState.Released:
+                    // Preserve the UI-over check if a very short click was fully
+                    // pressed and released before this component's Update ran.
+                    if (_leftButtonPressedSinceUpdate)
+                        HandleDragStart();
                     HandleDragReleased();
                     break;
             }
@@ -202,6 +228,11 @@ namespace Code.Players
 
         private void HandleDragReleased()
         {
+            // A quick drag can press, move, and release between Update ticks.
+            // Sample the final pointer position once more before committing selection.
+            if (_activeCommand == null)
+                HandleMouseDrag();
+
             if(!_wasMouseOverOnUI && _activeCommand == null && !Keyboard.current.shiftKey.isPressed)
                 DeSelectAllUnits();
             
@@ -224,17 +255,21 @@ namespace Code.Players
 
         private void HandleMouseDrag()
         {
-            if (_activeCommand != null || _wasMouseOverOnUI) return;
+            if (_activeCommand != null) return;
             
             Vector2 mousePosition = inputReader.MousePosition;
-            Bounds bound = ResizeSelectionBox(mousePosition); //나중에 씁니다.
+            Rect selectionRect = ResizeSelectionBox(mousePosition);
+
+            // Keep the visual rectangle attached to the pointer even if the drag
+            // began over UI. UI-originated drags still must not select world units.
+            if (_wasMouseOverOnUI) return;
 
             foreach (AbstractUnit unit in _aliveUnits)
             {
                 if (unit.gameObject.activeInHierarchy == false) continue;
 
                 Vector2 unitScreenPosition = Camera.main.WorldToScreenPoint(unit.transform.position);
-                if (bound.Contains(unitScreenPosition))
+                if (selectionRect.Contains(unitScreenPosition))
                 {
                     _addedUnits.Add(unit);
                 }
@@ -251,7 +286,7 @@ namespace Code.Players
             selectionBox.gameObject.SetActive(true);
             _startMousePosition = inputReader.MousePosition;
             _addedUnits.Clear(); //드래그 박스안에 있던 유닛을 전부 클리어해주고 시작.
-            _wasMouseOverOnUI = EventSystem.current.IsPointerOverGameObject();
+            _wasMouseOverOnUI = EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
         }
 
         #endregion
@@ -333,13 +368,39 @@ namespace Code.Players
 
         #region Utility logic
 
-        private Bounds ResizeSelectionBox(Vector2 mousePosition)
+        private Rect ResizeSelectionBox(Vector2 mousePosition)
         {
-            Vector2 delta = mousePosition - _startMousePosition;
-            selectionBox.anchoredPosition = _startMousePosition + delta * 0.5f;
-            selectionBox.sizeDelta = new Vector2(Mathf.Abs(delta.x), Mathf.Abs(delta.y));
+            Rect screenRect = Rect.MinMaxRect(
+                Mathf.Min(_startMousePosition.x, mousePosition.x),
+                Mathf.Min(_startMousePosition.y, mousePosition.y),
+                Mathf.Max(_startMousePosition.x, mousePosition.x),
+                Mathf.Max(_startMousePosition.y, mousePosition.y));
 
-            return new Bounds(selectionBox.anchoredPosition, selectionBox.sizeDelta);
+            RectTransform parentRect = selectionBox.parent as RectTransform;
+            Canvas canvas = selectionBox.GetComponentInParent<Canvas>();
+            if (parentRect == null || canvas == null)
+                return screenRect;
+
+            Camera eventCamera = canvas.renderMode == RenderMode.ScreenSpaceOverlay
+                ? null
+                : canvas.worldCamera;
+
+            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                    parentRect, _startMousePosition, eventCamera, out Vector2 localStart)
+                && RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                    parentRect, mousePosition, eventCamera, out Vector2 localCurrent))
+            {
+                Vector2 localDelta = localCurrent - localStart;
+                // localStart/localCurrent are relative to the parent's pivot,
+                // while anchoredPosition is relative to this RectTransform's
+                // anchor (the bottom-left corner in the scene). Place by world
+                // position so differing anchors cannot offset the selection box.
+                Vector2 localCenter = (localStart + localCurrent) * 0.5f;
+                selectionBox.position = parentRect.TransformPoint(localCenter);
+                selectionBox.sizeDelta = new Vector2(Mathf.Abs(localDelta.x), Mathf.Abs(localDelta.y));
+            }
+
+            return screenRect;
         }
 
         private void HandlePanning()

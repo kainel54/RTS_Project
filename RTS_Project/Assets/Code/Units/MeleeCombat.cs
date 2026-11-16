@@ -1,5 +1,7 @@
 using Code.Units.Animations;
 using Code.Units.BT;
+using Code.CoreSystem;
+using Code.GameEvents;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -145,6 +147,9 @@ namespace Code.Units
                 return;
 
             IsDead = true;
+            if (team == Team.Enemy)
+                Bus<EnemyDefeatedEvent>.Raise(new EnemyDefeatedEvent());
+
             if (_unit != null && _unit.Agent != null)
                 _unit.Agent.enabled = false;
 

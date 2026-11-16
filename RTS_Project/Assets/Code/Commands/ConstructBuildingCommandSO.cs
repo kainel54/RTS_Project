@@ -37,16 +37,29 @@ namespace Code.Commands
 
         public override void Handle(CommandContext context)
         {
-            IBuildingConstructor buildingConstructor = context.Commandable as IBuildingConstructor;
+            if (context.Commandable is not IBuildingConstructor buildingConstructor || BuildingData == null)
+                return;
+
             if (context.Hit.collider != null && context.Hit.collider.TryGetComponent(out ConstructionDummy dummy))
             {
                 buildingConstructor.ResumeConstruction(dummy);
+                return;
             }
-            else if (UserSupplies.Instance != null
-                && UserSupplies.Instance.HasEnoughSupplies(BuildingData.Cost))
+
+            if (BuildingData.ConstructionDummy == null
+                || !BuildingData.ConstructionDummy.TryGetComponent<ConstructionDummy>(out _))
             {
-                buildingConstructor.ConstructBuilding(BuildingData, context.Hit.point);
+                Debug.LogError($"{BuildingData.name}: ConstructionDummy prefab is missing its ConstructionDummy component.");
+                return;
             }
+
+            if (UserSupplies.Instance == null)
+                return;
+
+            bool suppliesSpent = UserSupplies.Instance.TrySpendSupplies(BuildingData.Cost);
+            if (!suppliesSpent) return;
+
+            buildingConstructor.ConstructBuilding(BuildingData, context.Hit.point);
         }
 
         public bool AllRestrictionPass(Vector3 point)

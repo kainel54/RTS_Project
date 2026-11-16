@@ -48,6 +48,7 @@ namespace Code.Environments
             }
 
             questManager.QuestSequenceCompleted += HandleQuestSequenceCompleted;
+            questManager.DefensePhaseStarted += HandleDefensePhaseStarted;
             if (questManager.IsCompleted)
                 BeginSpawning();
             else
@@ -56,11 +57,20 @@ namespace Code.Environments
 
         private void OnDestroy()
         {
+            StopAllCoroutines();
             if (questManager != null)
+            {
                 questManager.QuestSequenceCompleted -= HandleQuestSequenceCompleted;
+                questManager.DefensePhaseStarted -= HandleDefensePhaseStarted;
+            }
         }
 
         private void HandleQuestSequenceCompleted()
+        {
+            BeginSpawning();
+        }
+
+        private void HandleDefensePhaseStarted()
         {
             BeginSpawning();
         }
@@ -102,6 +112,12 @@ namespace Code.Environments
 
         private bool TryGetSpawnPosition(out Vector3 position)
         {
+            if (_keep == null || resourceSpawner == null)
+            {
+                position = default;
+                return false;
+            }
+
             float resourceRadius = resourceSpawner.MaxSpawnRadius;
             float minRadius = resourceRadius + innerResourceBuffer;
             float maxRadius = resourceRadius + Mathf.Max(innerResourceBuffer, outerResourceBuffer);

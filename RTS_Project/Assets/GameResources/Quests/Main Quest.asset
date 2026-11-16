@@ -73,3 +73,11 @@ MonoBehaviour:
     <Unit>k__BackingField: {fileID: 11400000, guid: 90010000000000000000000000000001, type: 2}
     <RewardSupply>k__BackingField: {fileID: 0}
     <RewardAmount>k__BackingField: 0
+  - <Type>k__BackingField: 4
+    <Description>k__BackingField: Defend the Keep: Defeat 3 Enemies
+    <TargetCount>k__BackingField: 3
+    <Supply>k__BackingField: {fileID: 0}
+    <Building>k__BackingField: {fileID: 0}
+    <Unit>k__BackingField: {fileID: 0}
+    <RewardSupply>k__BackingField: {fileID: 0}
+    <RewardAmount>k__BackingField: 0

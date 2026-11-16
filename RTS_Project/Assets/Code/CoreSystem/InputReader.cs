@@ -11,7 +11,11 @@ namespace Code.CoreSystem
 
         //[SerializeField] private LayerMask selectableUnitLayer;
         
-        public Vector2 MousePosition { get; private set; }
+        private Vector2 _mousePosition;
+
+        public Vector2 MousePosition => Mouse.current != null
+            ? Mouse.current.position.ReadValue()
+            : _mousePosition;
         public Vector2 KeyboardMovement { get; private set; }
 
         public Action<bool> OnMouseLeftButton;
@@ -39,7 +43,7 @@ namespace Code.CoreSystem
 
         public void OnAim(InputAction.CallbackContext context)
         {
-            MousePosition = context.ReadValue<Vector2>();
+            _mousePosition = context.ReadValue<Vector2>();
         }
 
         public void OnLeftButton(InputAction.CallbackContext context)

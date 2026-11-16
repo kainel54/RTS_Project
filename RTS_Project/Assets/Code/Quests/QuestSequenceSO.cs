@@ -11,7 +11,8 @@ namespace Code.Quests
         CollectSupply,
         CompleteBuilding,
         AssignWorkerToBuilding,
-        ProduceUnit
+        ProduceUnit,
+        DefeatEnemies
     }
 
     [Serializable]

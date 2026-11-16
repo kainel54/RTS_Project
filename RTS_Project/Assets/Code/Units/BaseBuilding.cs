@@ -58,14 +58,17 @@ namespace Code.Units
 
             CurrentHealth = Mathf.Max(0f, CurrentHealth - amount);
             if (CurrentHealth <= 0f)
+            {
+                Bus<BuildingDestroyedEvent>.Raise(new BuildingDestroyedEvent(this));
                 Destroy(gameObject);
+            }
         }
 
         protected override void OnDestroy()
         {
             PopulationSystem.Instance?.UnregisterBuilding(this);
             foreach (Worker worker in _assignedWorkers.ToArray())
-                worker?.SetAssignedBuilding(null);
+                worker?.SetAssignedBuilding(null, false);
             _assignedWorkers.Clear();
             base.OnDestroy();
         }
@@ -91,7 +94,7 @@ namespace Code.Units
             RemoveWorker(worker, true);
         }
 
-        private void RemoveWorker(Worker worker, bool reactivateWorker)
+        internal void RemoveWorker(Worker worker, bool reactivateWorker)
         {
             if (worker == null || !_assignedWorkers.Remove(worker)) return;
 
